@@ -12,7 +12,7 @@ const Flutuation: React.FC<FlutuationProp> = props => {
 
   return (
     <S.Container>
-      <S.FlutuationText>{_flutuation}%</S.FlutuationText>
+      <S.FlutuationText>{_flutuation.toFixed(0)}%</S.FlutuationText>
       {showIcon && <S.IconWrapper>{icon}</S.IconWrapper>}
     </S.Container>
   );

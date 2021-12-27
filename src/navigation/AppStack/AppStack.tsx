@@ -5,11 +5,18 @@ import { useTheme } from 'styled-components';
 import Button from '../../components/atoms/Button/Button';
 import { Text } from '../../components/atoms/StrongText/styles';
 import Card from '../../components/molecules/Card';
+import Flutuation from '../../components/molecules/Flutuation';
 import StatementItem from '../../components/molecules/StatementItem';
 import FontName from '../../constants/fontNames';
 import Routes from '../../constants/routesPath';
+import Dashboard from '../../screens/Dashboard/Dashboard';
 
-const Stack = createNativeStackNavigator();
+export type RootStackParamList = {
+  [Routes.DASHBOARD]: undefined;
+  [Routes.STATEMENTS]: undefined;
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 // import { Container } from './styles';
 
@@ -56,9 +63,9 @@ const AppStack: React.FC = () => {
         <Card
           headerProps={{
             title: 'Saldo',
-            right: () => <Text>Test</Text>,
+            right: () => <Flutuation flutuation={-20} />,
           }}
-          variant="danger">
+          variant="success">
           <View>
             <Text>children</Text>
           </View>
@@ -69,7 +76,7 @@ const AppStack: React.FC = () => {
         <Card
           headerProps={{
             title: 'Saldo',
-            right: () => <Text>Test</Text>,
+            right: () => <Flutuation flutuation={15} />,
           }}>
           <View>
             <Text>children</Text>
@@ -88,7 +95,7 @@ const AppStack: React.FC = () => {
           },
         }}
         name={Routes.DASHBOARD}
-        component={Component}
+        component={Dashboard}
       />
       <Stack.Screen
         options={{
@@ -105,6 +112,8 @@ const AppStack: React.FC = () => {
             backgroundColor: theme.colors.bgDark,
           },
           headerShadowVisible: false,
+          headerTintColor: theme.colors.white,
+          animation: 'fade_from_bottom',
         }}
         name={Routes.STATEMENTS}
         component={Component}
