@@ -1,6 +1,6 @@
 export type ItemStatus = 'NOT_PAID' | 'PAID';
 
-export type ItemType = 'CREDIT' | 'DEBIT';
+export type ItemType = 'CREDIT' | 'DEBT';
 
 export interface StatementItem {
   title: string;

@@ -1,16 +1,25 @@
 import React from 'react';
-import { Dimensions } from 'react-native';
+import { ActivityIndicator, Dimensions, View } from 'react-native';
 import { PieChart } from 'react-native-chart-kit';
+import { useDispatch } from 'react-redux';
+import { useTheme } from 'styled-components';
 import Button from '../../components/atoms/Button';
 import Card from '../../components/molecules/Card';
 import Flutuation from '../../components/molecules/Flutuation';
+import { StatementItem } from '../../components/molecules/StatementItem/types';
 import StatementsList from '../../components/molecules/StatementsList';
 import Routes from '../../constants/routesPath';
 import useCurrencyFormater from '../../hooks/useCurrencyFormater';
 import useNavigation from '../../hooks/useNavigation';
+import useSelector from '../../hooks/useSelector';
+import {
+  getAsyncDashboardAction,
+  setDashboardIsLoadingAction
+} from '../../redux-store/redux-actions/dashboard';
+import randomColor from '../../utils/randomColor';
 import * as S from './styles';
 
-const data = [
+const ChartData = [
   {
     name: 'Seoul',
     population: 21500000,
@@ -93,11 +102,49 @@ const data = [
 const Dashboard: React.FC = () => {
   const currencyFormater = useCurrencyFormater('BRL');
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const theme = useTheme();
 
-  const balance = currencyFormater.format(18693.45);
-  const balanceFlutuation = 29;
-  const debts = currencyFormater.format(5863.41);
-  const debtsPercent = (5863.41 / 18693.45) * 100;
+  const { isLoading, data } = useSelector(state => state.dashboard);
+
+  const BALANCE = data?.balance?.total || 0;
+  const FLUTUATION = data?.balance?.flutuation || 0;
+  const DEBTS = data?.debts || 0;
+  const CHART = data?.chart || [];
+  const STATEMENTS = data?.statements || [];
+
+  const balance = currencyFormater.format(BALANCE);
+  const balanceFlutuation = FLUTUATION;
+  const debts = currencyFormater.format(DEBTS);
+  const debtsPercent = (DEBTS / BALANCE) * 100;
+  const statements: StatementItem[] = STATEMENTS.map(statement => ({
+    statamenteDate: new Date(statement.statementDate),
+    status: statement.status,
+    title: statement.statementType?.description,
+    type: statement.statementType?.type,
+    value: statement.value,
+  }));
+
+  const chartData = CHART.map(chartItem => ({
+    name: chartItem.title,
+    total: chartItem.total,
+    color: randomColor(),
+    legendFontColor: theme.colors.white,
+    legendFontSize: 11,
+  }));
+
+  React.useEffect(() => {
+    dispatch(setDashboardIsLoadingAction(true));
+    dispatch(getAsyncDashboardAction());
+  }, [dispatch]);
+
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <ActivityIndicator size={30} color={theme.colors.bgLight} />
+      </View>
+    );
+  }
 
   return (
     <React.Fragment>
@@ -131,8 +178,8 @@ const Dashboard: React.FC = () => {
               title: 'Despesas do mês',
             }}>
             <PieChart
-              data={data}
-              accessor="population"
+              data={chartData}
+              accessor="total"
               height={250}
               width={Dimensions.get('screen').width}
               backgroundColor={'transparent'}
@@ -148,46 +195,7 @@ const Dashboard: React.FC = () => {
         </S.DashboardSection>
 
         <S.DashboardSection>
-          <StatementsList
-            statements={[
-              {
-                statamenteDate: new Date(),
-                status: 'NOT_PAID',
-                title: 'Teste',
-                type: 'CREDIT',
-                value: 999,
-              },
-              {
-                statamenteDate: new Date(),
-                status: 'NOT_PAID',
-                title: 'Teste',
-                type: 'CREDIT',
-                value: 999,
-              },
-              {
-                statamenteDate: new Date(),
-                status: 'PAID',
-                title: 'Teste',
-                type: 'CREDIT',
-                value: 999,
-              },
-              {
-                statamenteDate: new Date(),
-                status: 'PAID',
-                title: 'Teste',
-                type: 'DEBIT',
-                value: 999,
-              },
-              {
-                statamenteDate: new Date(),
-                status: 'PAID',
-                title: 'Teste',
-                type: 'CREDIT',
-                value: 999,
-              },
-            ]}
-            title="Últimos lançamentos"
-          />
+          <StatementsList statements={statements} title="Últimos lançamentos" />
         </S.DashboardSection>
       </S.Container>
 

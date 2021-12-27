@@ -11,7 +11,7 @@ export type APIStatementType = {
     createdAt: string;
     updatedAt: string;
     description: string;
-    type: 'CREDIT' | 'DEBIT';
+    type: 'CREDIT' | 'DEBT';
     frequency: 'FIXED' | 'VARIABLE';
   };
 };

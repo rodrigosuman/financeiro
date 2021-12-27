@@ -55,7 +55,7 @@ const AppStack: React.FC = () => {
             status: 'PAID',
             title: 'Aluguel',
             value: 1240.45,
-            type: 'DEBIT',
+            type: 'DEBT',
           }}
         />
       </View>

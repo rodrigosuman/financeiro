@@ -7,7 +7,7 @@ const Flutuation: React.FC<FlutuationProp> = props => {
   const { flutuation, showIcon = true } = props;
 
   const size = 15;
-  const icon = flutuation > 0 ? icons.CREDIT({ size }) : icons.DEBIT({ size });
+  const icon = flutuation > 0 ? icons.CREDIT({ size }) : icons.DEBT({ size });
   const _flutuation = flutuation > 0 ? flutuation : flutuation * -1;
 
   return (

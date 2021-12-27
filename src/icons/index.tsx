@@ -8,7 +8,7 @@ interface Props {
 
 const icons = {
   CREDIT: (props?: Props) => <ArrowUp {...props} />,
-  DEBIT: (props?: Props) => <ArrowDown {...props} />,
+  DEBT: (props?: Props) => <ArrowDown {...props} />,
 };
 
 export default icons;
