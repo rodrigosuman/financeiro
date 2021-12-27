@@ -1,6 +1,6 @@
-import ThemeProvider from 'providers/ThemeProvider';
 import React from 'react';
 import { View } from 'react-native';
+import ThemeProvider from './providers/ThemeProvider';
 
 // import { Container } from './styles';
 
