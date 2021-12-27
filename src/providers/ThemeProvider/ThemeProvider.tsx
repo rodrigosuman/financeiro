@@ -7,7 +7,7 @@ export const theme: IThemeProvider = {
     bgDark: '#2A1C52',
     bgLight: '#3E2E6B',
     primary: '#461A7E',
-    secondary: '#9A91CE',
+    secondary: '#DAD4FC',
     white: '#FFFFFF',
     danger: '#BB4771',
     success: '#2EBD67',
