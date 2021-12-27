@@ -1,4 +1,6 @@
-export type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'success';
+import { ThemeColor } from '../../../styles';
+
+export type ButtonVariant = keyof ThemeColor;
 
 export interface ButtonProps {
   onPress: () => void;
