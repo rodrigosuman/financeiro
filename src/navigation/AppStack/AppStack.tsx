@@ -1,6 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import { View } from 'react-native';
+import FontName from '../../constants/fontNames';
 import Routes from '../../constants/routesPath';
 import { theme } from '../../providers/ThemeProvider/ThemeProvider';
 
@@ -26,6 +27,11 @@ const AppStack: React.FC = () => {
         options={{
           contentStyle: {
             backgroundColor: theme.colors.bgDark,
+          },
+          headerTitleStyle: {
+            fontFamily: FontName.REGULAR,
+            color: theme.colors.white,
+            fontSize: 20,
           },
           headerStyle: {
             backgroundColor: theme.colors.bgDark,
