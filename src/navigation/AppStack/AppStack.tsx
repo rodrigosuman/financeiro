@@ -1,15 +1,10 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import { Alert, View } from 'react-native';
 import { useTheme } from 'styled-components';
-import Button from '../../components/atoms/Button/Button';
-import { Text } from '../../components/atoms/StrongText/styles';
-import Card from '../../components/molecules/Card';
-import Flutuation from '../../components/molecules/Flutuation';
-import StatementItem from '../../components/molecules/StatementItem';
 import FontName from '../../constants/fontNames';
 import Routes from '../../constants/routesPath';
 import Dashboard from '../../screens/Dashboard/Dashboard';
+import MounthlyStatements from '../../screens/MounthlyStatements/MounthlyStatements';
 
 export type RootStackParamList = {
   [Routes.DASHBOARD]: undefined;
@@ -23,68 +18,6 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const AppStack: React.FC = () => {
   const theme = useTheme();
 
-  const Component = () => (
-    <View>
-      <Button
-        onPress={() => Alert.alert('Pressed')}
-        title="Adicionar"
-        variant="primary"
-      />
-      <Button
-        onPress={() => Alert.alert('Pressed')}
-        title="Lançamentos"
-        variant="success"
-      />
-
-      <View style={{ padding: 10, paddingBottom: 0 }}>
-        <StatementItem
-          itemProps={{
-            statamenteDate: new Date(),
-            status: 'NOT_PAID',
-            title: 'Salário',
-            value: 6900.35,
-            type: 'CREDIT',
-          }}
-        />
-      </View>
-
-      <View style={{ padding: 10, paddingTop: 0 }}>
-        <StatementItem
-          itemProps={{
-            statamenteDate: new Date(),
-            status: 'PAID',
-            title: 'Aluguel',
-            value: 1240.45,
-            type: 'DEBT',
-          }}
-        />
-      </View>
-      <View style={{ paddingTop: 40 }}>
-        <Card
-          headerProps={{
-            title: 'Saldo',
-            right: () => <Flutuation flutuation={-20} />,
-          }}
-          variant="success">
-          <View>
-            <Text>children</Text>
-          </View>
-        </Card>
-      </View>
-
-      <View style={{ paddingTop: 40 }}>
-        <Card
-          headerProps={{
-            title: 'Saldo',
-            right: () => <Flutuation flutuation={15} />,
-          }}>
-          <View>
-            <Text>children</Text>
-          </View>
-        </Card>
-      </View>
-    </View>
-  );
   return (
     <Stack.Navigator initialRouteName={Routes.DASHBOARD}>
       <Stack.Screen
@@ -111,12 +44,13 @@ const AppStack: React.FC = () => {
           headerStyle: {
             backgroundColor: theme.colors.bgDark,
           },
+          headerBackVisible: false,
           headerShadowVisible: false,
           headerTintColor: theme.colors.white,
           animation: 'fade_from_bottom',
         }}
         name={Routes.STATEMENTS}
-        component={Component}
+        component={MounthlyStatements}
       />
     </Stack.Navigator>
   );

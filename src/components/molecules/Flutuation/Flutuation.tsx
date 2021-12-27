@@ -10,6 +10,10 @@ const Flutuation: React.FC<FlutuationProp> = props => {
   const icon = flutuation > 0 ? icons.CREDIT({ size }) : icons.DEBT({ size });
   const _flutuation = flutuation > 0 ? flutuation : flutuation * -1;
 
+  if (_flutuation === 0) {
+    return null;
+  }
+
   return (
     <S.Container>
       <S.FlutuationText>{_flutuation.toFixed(0)}%</S.FlutuationText>
