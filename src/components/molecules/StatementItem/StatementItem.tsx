@@ -1,8 +1,7 @@
 import { format } from 'date-fns';
 import React from 'react';
 import useCurrencyFormater from '../../../hooks/useCurrencyFormater';
-import ArrowDown from '../../../icons/ArrowDown';
-import ArrowUp from '../../../icons/ArrowUp';
+import icons from '../../../icons';
 import * as S from './styles';
 import { StatemetItemProps } from './types';
 
@@ -11,11 +10,6 @@ const StatementItem: React.FC<StatemetItemProps> = props => {
 
   const value = useCurrencyFormater('BRL').format(itemProps.value);
   const statamenteDate = format(itemProps.statamenteDate, 'dd/MM/yyyy');
-
-  const icons = {
-    DEBIT: <ArrowDown />,
-    CREDIT: <ArrowUp />,
-  };
 
   return (
     <S.Container
@@ -26,7 +20,7 @@ const StatementItem: React.FC<StatemetItemProps> = props => {
       <S.ItemHeader>
         <S.TitleWrapper>
           {icons[itemProps.type] ? (
-            <S.IconWrapper>{icons[itemProps.type]}</S.IconWrapper>
+            <S.IconWrapper>{icons[itemProps.type]()}</S.IconWrapper>
           ) : (
             <></>
           )}

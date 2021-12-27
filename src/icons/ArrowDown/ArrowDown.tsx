@@ -2,12 +2,14 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from 'styled-components';
 
-// import { Container } from './styles';
+interface Props {
+  size?: number;
+}
 
-const ArrowDown: React.FC = () => {
+const ArrowDown: React.FC<Props> = ({ size = 18 }) => {
   const theme = useTheme();
 
-  return <Icon name="arrow-downward" color={theme.colors.danger} size={18} />;
+  return <Icon name="arrow-downward" color={theme.colors.danger} size={size} />;
 };
 
 export default ArrowDown;
