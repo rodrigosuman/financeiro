@@ -1,7 +1,6 @@
 import React from 'react';
-import { ActivityIndicator, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { useTheme } from 'styled-components';
 import Button from '../../components/atoms/Button';
 import Card from '../../components/molecules/Card';
 import Flutuation from '../../components/molecules/Flutuation';
@@ -14,16 +13,18 @@ import useCurrencyFormater from '../../hooks/useCurrencyFormater';
 import useNavigation from '../../hooks/useNavigation';
 import useSelector from '../../hooks/useSelector';
 import icons from '../../icons';
-import { getAsyncMounthStatementsAction } from '../../redux-store/redux-actions/statements';
+import {
+  getAsyncMounthStatementsAction,
+  setMounthStatementsIsLoadingAction
+} from '../../redux-store/redux-actions/statements';
 import * as S from './styles';
 
 const MounthlyStatements: React.FC = () => {
   const navigation = useNavigation();
   const currencyFormater = useCurrencyFormater('BRL');
   const dispatch = useDispatch();
-  const theme = useTheme();
 
-  const { balance, isLoading, data } = useSelector(state => state.statements);
+  const { balance, data, isLoading } = useSelector(state => state.statements);
 
   const BALANCE = balance?.total || 0;
   const FLUTUATION = balance?.flutuation || 0;
@@ -42,6 +43,7 @@ const MounthlyStatements: React.FC = () => {
 
   const getStatements = React.useCallback(
     (year: number, mounth: number) => {
+      dispatch(setMounthStatementsIsLoadingAction(true));
       dispatch(getAsyncMounthStatementsAction(year, mounth));
     },
     [dispatch],
@@ -99,54 +101,27 @@ const MounthlyStatements: React.FC = () => {
             headerProps={{
               title: 'Resumo mensal',
             }}>
-            {isLoading ? (
-              <View
-                style={{
-                  flex: 1,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <ActivityIndicator size={30} color={theme.colors.bgLight} />
-              </View>
-            ) : (
-              <MounthResume {...resume} />
-            )}
+            <MounthResume isLoading={isLoading} {...resume} />
           </Card>
         </S.ContainerSection>
         <S.ContainerSection>
           <Card
+            isLoading={isLoading}
             headerProps={{
               title: 'Saldo em conta',
-              right: () => <Flutuation flutuation={balanceFlutuation} />,
+              right: () => (
+                <Flutuation
+                  isLoading={isLoading}
+                  flutuation={balanceFlutuation}
+                />
+              ),
             }}>
-            {isLoading ? (
-              <View
-                style={{
-                  flex: 1,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <ActivityIndicator size={30} color={theme.colors.bgLight} />
-              </View>
-            ) : (
-              <S.CardText>{_balance}</S.CardText>
-            )}
+            <S.CardText>{_balance}</S.CardText>
           </Card>
         </S.ContainerSection>
 
         <S.ContainerSection>
-          {isLoading ? (
-            <View
-              style={{
-                flex: 1,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <ActivityIndicator size={30} color={theme.colors.bgLight} />
-            </View>
-          ) : (
-            <StatementsList statements={statements} />
-          )}
+          <StatementsList isLoading={isLoading} statements={statements} />
         </S.ContainerSection>
       </S.Container>
 

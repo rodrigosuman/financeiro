@@ -8,4 +8,5 @@ export interface CardProps {
     right?: () => JSX.Element;
   };
   variant?: CardVariant;
+  isLoading?: boolean;
 }

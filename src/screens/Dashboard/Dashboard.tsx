@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActivityIndicator, Dimensions, View } from 'react-native';
+import { Dimensions } from 'react-native';
 import { PieChart } from 'react-native-chart-kit';
 import { useDispatch } from 'react-redux';
 import { useTheme } from 'styled-components';
@@ -138,22 +138,20 @@ const Dashboard: React.FC = () => {
     dispatch(getAsyncDashboardAction());
   }, [dispatch]);
 
-  if (isLoading) {
-    return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <ActivityIndicator size={30} color={theme.colors.bgLight} />
-      </View>
-    );
-  }
-
   return (
     <React.Fragment>
       <S.Container>
         <S.DashboardSection>
           <Card
+            isLoading={isLoading}
             headerProps={{
               title: 'Saldo',
-              right: () => <Flutuation flutuation={balanceFlutuation} />,
+              right: () => (
+                <Flutuation
+                  isLoading={isLoading}
+                  flutuation={balanceFlutuation}
+                />
+              ),
             }}>
             <S.CardText>{balance}</S.CardText>
           </Card>
@@ -161,11 +159,16 @@ const Dashboard: React.FC = () => {
 
         <S.DashboardSection>
           <Card
+            isLoading={isLoading}
             variant="danger"
             headerProps={{
               title: 'A pagar',
               right: () => (
-                <Flutuation flutuation={debtsPercent} showIcon={false} />
+                <Flutuation
+                  flutuation={debtsPercent}
+                  isLoading={isLoading}
+                  showIcon={false}
+                />
               ),
             }}>
             <S.CardText>{debts}</S.CardText>
@@ -174,6 +177,7 @@ const Dashboard: React.FC = () => {
 
         <S.DashboardSection>
           <Card
+            isLoading={isLoading}
             headerProps={{
               title: 'Despesas do mês',
             }}>
@@ -195,7 +199,11 @@ const Dashboard: React.FC = () => {
         </S.DashboardSection>
 
         <S.DashboardSection>
-          <StatementsList statements={statements} title="Últimos lançamentos" />
+          <StatementsList
+            statements={statements}
+            isLoading={isLoading}
+            title="Últimos lançamentos"
+          />
         </S.DashboardSection>
       </S.Container>
 
