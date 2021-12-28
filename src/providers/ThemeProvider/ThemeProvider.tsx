@@ -11,6 +11,7 @@ export const theme: IThemeProvider = {
     white: '#FFFFFF',
     danger: '#BB4771',
     success: '#2EBD67',
+    error: '#F44968',
   },
 };
 
