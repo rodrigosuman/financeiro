@@ -6,14 +6,7 @@ export type APIStatementType = {
   value: number;
   comments: string[];
   status: 'NOT_PAID' | 'PAID';
-  statementType: {
-    id: string;
-    createdAt: string;
-    updatedAt: string;
-    description: string;
-    type: 'CREDIT' | 'DEBT';
-    frequency: 'FIXED' | 'VARIABLE';
-  };
+  statementType: APIStatementTypes;
 };
 
 export type APIBalance = {
@@ -57,4 +50,13 @@ export type APIPostOrPatchStatements = {
   statementDate: Date;
   value: number;
   comments?: string[];
+};
+
+export type APIStatementTypes = {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  description: string;
+  type: 'CREDIT' | 'DEBT';
+  frequency: 'FIXED' | 'VARIABLE';
 };

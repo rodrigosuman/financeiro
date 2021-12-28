@@ -10,7 +10,7 @@ const DatePicker: React.FC<DatePickerProps> = props => {
   const { placeholder, onValue, name } = props;
 
   const datePickerRef = React.useRef<any>(null);
-  const [selectedDate, setSelectedDate] = React.useState<Date>(new Date());
+  const [selectedDate, setSelectedDate] = React.useState<Date | undefined>();
   const [show, setShow] = React.useState<boolean>(false);
   const { fieldName, registerField, error } = useField(name);
 
@@ -67,14 +67,16 @@ const DatePicker: React.FC<DatePickerProps> = props => {
       {show && (
         <DateTimePicker
           testID="dateTimePicker"
-          value={selectedDate}
+          value={selectedDate || new Date()}
           mode="date"
           is24Hour={true}
           display="spinner"
           minimumDate={props.minimumDate}
           maximumDate={props.maximumDate}
           onChange={(event, date: any) => {
-            handleChangeDate(date ? new Date(date) : selectedDate);
+            handleChangeDate(
+              date ? new Date(date) : selectedDate ? selectedDate : new Date(),
+            );
           }}
         />
       )}

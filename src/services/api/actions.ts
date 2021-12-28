@@ -5,6 +5,7 @@ import {
   APIDashboardReponse,
   APIFindByMounthResponse,
   APIPostOrPatchStatements,
+  APIStatementTypes,
   APIUpdateStatementResponse
 } from '../../types';
 
@@ -39,4 +40,8 @@ export const deleteStatements = (statementId: string) => {
   return api.delete<APIUpdateStatementResponse>(
     ApiRoutes.STATEMENTS + '/' + statementId,
   );
+};
+
+export const getStatementTypes = () => {
+  return api.get<APIStatementTypes[]>(ApiRoutes.STATEMENT_TYPES);
 };

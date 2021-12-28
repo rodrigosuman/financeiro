@@ -10,7 +10,7 @@ import store from './redux-store';
 
 // import { Container } from './styles';
 
-const src: React.FC = () => {
+const AppContainer: React.FC = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar
@@ -28,4 +28,4 @@ const src: React.FC = () => {
   );
 };
 
-export default src;
+export default AppContainer;

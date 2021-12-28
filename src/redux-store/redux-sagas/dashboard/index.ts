@@ -8,9 +8,7 @@ export function* asyncGetDashboard(): Generator<any, any, any> {
     const response = yield call(getDashboard);
 
     yield put(setDashboardAction(response.data));
-  } catch (error) {
-    console.log({ error });
-  }
+  } catch (error) {}
 }
 
 function* sagas() {

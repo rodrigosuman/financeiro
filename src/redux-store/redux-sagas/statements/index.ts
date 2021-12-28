@@ -5,8 +5,6 @@ import { setMounthStatementsAction } from '../../redux-actions/statements';
 
 export function* asyncGetDashboard(args: any): Generator<any, any, any> {
   try {
-    console.log({ args });
-
     const { year, mounth } = args.payload;
 
     const response = yield call(() => getStatementsByMounth(year, mounth));

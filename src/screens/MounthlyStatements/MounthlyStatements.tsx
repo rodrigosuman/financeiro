@@ -1,5 +1,6 @@
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/mobile';
+import { lastDayOfMonth } from 'date-fns';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
@@ -24,6 +25,7 @@ import {
   getAsyncMounthStatementsAction,
   setMounthStatementsIsLoadingAction
 } from '../../redux-store/redux-actions/statements';
+import { getAsyncStatementTypesAction } from '../../redux-store/redux-actions/statementTypes';
 import * as S from './styles';
 
 const MounthlyStatements: React.FC = () => {
@@ -34,6 +36,7 @@ const MounthlyStatements: React.FC = () => {
   const modalRef = React.useRef<ModalRefProps>({ toggleVisible: () => {} });
 
   const { balance, data, isLoading } = useSelector(state => state.statements);
+  const statementTypes = useSelector(state => state.statementTypes);
 
   const BALANCE = balance?.total || 0;
   const FLUTUATION = balance?.flutuation || 0;
@@ -94,7 +97,18 @@ const MounthlyStatements: React.FC = () => {
   React.useEffect(() => {
     const CURRENT_DATE = new Date();
     getStatements(CURRENT_DATE.getFullYear(), CURRENT_DATE.getMonth() + 1);
-  }, [getStatements]);
+    dispatch(getAsyncStatementTypesAction());
+  }, [dispatch, getStatements]);
+
+  const statementDate = data?.[0]?.statementDate
+    ? new Date(data?.[0]?.statementDate)
+    : new Date();
+
+  const maximumDate = lastDayOfMonth(statementDate);
+  const MOUNTH = maximumDate.getMonth() + 1;
+  const minimumDate = new Date(
+    `${maximumDate.getFullYear()}-${MOUNTH > 9 ? MOUNTH : `0${MOUNTH}`}-01`,
+  );
 
   return (
     <React.Fragment>
@@ -150,24 +164,10 @@ const MounthlyStatements: React.FC = () => {
               <S.FormItem>
                 <Dropdown
                   placeholder="Tipo"
-                  options={[
-                    { title: '1', value: 1 },
-                    { title: '2', value: 2 },
-                    { title: '2', value: 2 },
-                    { title: '2', value: 2 },
-                    { title: '2', value: 2 },
-                    { title: '2', value: 2 },
-                    { title: '2', value: 2 },
-                    { title: '2', value: 2 },
-                    { title: '2', value: 2 },
-                    { title: '2', value: 2 },
-                    { title: '2', value: 2 },
-                    { title: '2', value: 2 },
-                    { title: '2', value: 2 },
-                    { title: '2', value: 2 },
-                    { title: '2', value: 2 },
-                  ]}
-                  onValue={console.log}
+                  options={statementTypes?.data?.map(statementType => ({
+                    title: statementType.description,
+                    value: statementType.id,
+                  }))}
                   name="statementType"
                 />
               </S.FormItem>
@@ -175,8 +175,9 @@ const MounthlyStatements: React.FC = () => {
               <S.FormItem>
                 <DatePicker
                   placeholder="Data"
-                  onValue={console.log}
                   name="statementDate"
+                  maximumDate={maximumDate}
+                  minimumDate={minimumDate}
                 />
               </S.FormItem>
             </S.FormInputsContainer>
