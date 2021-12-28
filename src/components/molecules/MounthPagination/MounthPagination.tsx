@@ -38,16 +38,19 @@ const MounthPagination: React.FC<MounthPaginationProps> = props => {
 
   return (
     <S.Container>
-      <TouchableOpacity onPress={() => handleMounth(-1)}>
-        {icons.ARROW_LEFT()}
-      </TouchableOpacity>
-      <S.MounthTitleWrapper>
+      <S.HandlersWrapper>
+        <TouchableOpacity onPress={() => handleMounth(-1)}>
+          {icons.ARROW_LEFT()}
+        </TouchableOpacity>
         <S.MounthTitle>{_formatedDate}</S.MounthTitle>
+        <TouchableOpacity onPress={() => handleMounth(1)}>
+          {icons.ARROW_RIGHT()}
+        </TouchableOpacity>
+      </S.HandlersWrapper>
+
+      <S.MounthTitleWrapper>
         <S.YearText>{_formatedYear}</S.YearText>
       </S.MounthTitleWrapper>
-      <TouchableOpacity onPress={() => handleMounth(1)}>
-        {icons.ARROW_RIGHT()}
-      </TouchableOpacity>
     </S.Container>
   );
 };

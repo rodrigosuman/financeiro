@@ -6,11 +6,17 @@ export const Container = styled.View`
   ${({ theme }) => css`
     background-color: ${theme.colors.white}09;
     width: 100%;
-    justify-content: space-between;
-    flex-direction: row;
+
     align-items: center;
     padding: 5px 10px;
   `}
+`;
+
+export const HandlersWrapper = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 `;
 
 export const MounthTitle = styled(DefaultText)`
@@ -24,7 +30,7 @@ export const YearText = styled(SmallText)`
   ${({ theme }) => css`
     color: ${theme.colors.secondary}90;
     text-align: center;
-    margin-top: -8px;
+    margin-top: -4px;
   `}
 `;
 
