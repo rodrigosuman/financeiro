@@ -7,4 +7,5 @@ export interface DropdownProps {
   options: DropdownOption[];
   placeholder: string;
   onValue?: (option: DropdownOption) => void;
+  name: string;
 }
