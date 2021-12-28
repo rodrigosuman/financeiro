@@ -11,6 +11,7 @@ export const ModalContent = styled.View`
   ${({ theme }) => css`
     background-color: ${theme.colors.bgDark};
     min-height: 40%;
+    max-height: 70%;
   `}
 `;
 

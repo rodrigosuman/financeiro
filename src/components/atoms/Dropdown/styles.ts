@@ -23,12 +23,7 @@ export const ValueText = styled(DefaultText)`
   `}
 `;
 
-export const DropdownOptions = styled.ScrollView`
-  ${() => css`
-    padding-top: 16px;
-    padding-bottom: 16px;
-  `}
-`;
+export const DropdownOptions = styled.ScrollView``;
 
 export const DropdownOptionText = styled(DefaultText)`
   ${({ theme }) => css`
