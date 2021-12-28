@@ -16,17 +16,3 @@ export const CardText = styled(StrongText)`
     text-align: center;
   `}
 `;
-
-export const FormContainer = styled.View`
-  justify-content: space-between;
-  flex-direction: column;
-  height: 500px;
-`;
-
-export const FormInputsContainer = styled.View`
-  padding: 40px 10px;
-`;
-
-export const FormItem = styled.View`
-  margin-bottom: 60px;
-`;

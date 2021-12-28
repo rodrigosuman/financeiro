@@ -11,6 +11,8 @@ export interface ThemeColor {
   success: string;
 }
 
+export type KeyOfThemeColor = keyof ThemeColor;
+
 export interface IThemeProvider {
   colors: ThemeColor;
 }

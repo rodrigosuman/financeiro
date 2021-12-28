@@ -8,6 +8,7 @@ export interface StatementItem {
   status: ItemStatus;
   type: ItemType;
   statamenteDate: Date;
+  id: string;
 }
 
 export interface StatemetItemProps {

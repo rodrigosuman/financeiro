@@ -66,7 +66,19 @@ const Dropdown: React.FC<DropdownProps> = props => {
         </S.ValueWrapper>
         {icons.CHEVRON_DOWN({ size: 16 })}
       </S.Container>
-      <Modal ref={modalRef}>
+      <Modal
+        ref={modalRef}
+        left={
+          selectedOption?.value && {
+            text: 'Limpar',
+            variant: 'secondary',
+            action: () =>
+              handleOnValue({
+                title: '',
+                value: undefined,
+              }),
+          }
+        }>
         <S.DropdownOptions>
           {options?.map((option, key) => (
             <TouchableOpacity onPress={() => handleOnValue?.(option)} key={key}>

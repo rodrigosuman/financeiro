@@ -8,7 +8,7 @@ const Modal: React.ForwardRefRenderFunction<ModalRefProps, ModalProps> = (
   props,
   ref,
 ) => {
-  const { onDelete } = props;
+  const { left } = props;
   const [visible, setVisible] = React.useState<boolean>(false);
 
   React.useImperativeHandle(ref, () => ({
@@ -22,9 +22,9 @@ const Modal: React.ForwardRefRenderFunction<ModalRefProps, ModalProps> = (
           <TouchableOpacity onPress={() => setVisible(false)}>
             {icons.CLOSE({ size: 30 })}
           </TouchableOpacity>
-          {onDelete && (
-            <TouchableOpacity>
-              <S.DeleteText>Deletar</S.DeleteText>
+          {left?.action && (
+            <TouchableOpacity onPress={() => left?.action?.()}>
+              <S.DeleteText>{left.text}</S.DeleteText>
             </TouchableOpacity>
           )}
         </S.ModalContentHeader>

@@ -1,22 +1,17 @@
-import { FormHandles } from '@unform/core';
-import { Form } from '@unform/mobile';
 import { lastDayOfMonth } from 'date-fns';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 import Button from '../../components/atoms/Button';
-import CurrencyInput from '../../components/atoms/CurrencyInput';
-import DatePicker from '../../components/atoms/DatePicker';
-import Dropdown from '../../components/atoms/Dropdown';
 import Card from '../../components/molecules/Card';
 import Flutuation from '../../components/molecules/Flutuation';
-import Modal from '../../components/molecules/Modal/Modal';
 import { ModalRefProps } from '../../components/molecules/Modal/types';
 import MounthPagination from '../../components/molecules/MounthPagination/MounthPagination';
 import MounthResume from '../../components/molecules/MounthResume';
 import { MounthResumeProps } from '../../components/molecules/MounthResume/types';
 import { StatementItem } from '../../components/molecules/StatementItem/types';
 import StatementsList from '../../components/molecules/StatementsList';
+import Routes from '../../constants/routesPath';
 import useCurrencyFormater from '../../hooks/useCurrencyFormater';
 import useNavigation from '../../hooks/useNavigation';
 import useSelector from '../../hooks/useSelector';
@@ -26,17 +21,20 @@ import {
   setMounthStatementsIsLoadingAction
 } from '../../redux-store/redux-actions/statements';
 import { getAsyncStatementTypesAction } from '../../redux-store/redux-actions/statementTypes';
+import { StatementCreateEditFormRef } from '../StatmentCreateEditForm/types';
 import * as S from './styles';
 
 const MounthlyStatements: React.FC = () => {
   const navigation = useNavigation();
   const currencyFormater = useCurrencyFormater('BRL');
   const dispatch = useDispatch();
-  const formRef = React.useRef<FormHandles>({} as FormHandles);
+
   const modalRef = React.useRef<ModalRefProps>({ toggleVisible: () => {} });
+  const statementFormRef = React.useRef<StatementCreateEditFormRef>({
+    setInitialData: () => {},
+  });
 
   const { balance, data, isLoading } = useSelector(state => state.statements);
-  const statementTypes = useSelector(state => state.statementTypes);
 
   const BALANCE = balance?.total || 0;
   const FLUTUATION = balance?.flutuation || 0;
@@ -51,6 +49,7 @@ const MounthlyStatements: React.FC = () => {
     title: statement.statementType?.description,
     type: statement.statementType?.type,
     value: statement.value,
+    id: statement.id,
   }));
 
   const getStatements = React.useCallback(
@@ -144,52 +143,35 @@ const MounthlyStatements: React.FC = () => {
         </S.ContainerSection>
 
         <S.ContainerSection>
-          <StatementsList isLoading={isLoading} statements={statements} />
+          <StatementsList
+            isLoading={isLoading}
+            statements={statements}
+            onItemPress={statement => {
+              try {
+                const _statement = data?.find(item => item.id === statement.id);
+                // @ts-ignore
+                navigation.navigate(Routes.CREATE_EDIT_STATEMENTS, {
+                  maximumDate,
+                  minimumDate,
+                  statement: _statement,
+                });
+              } catch (error) {}
+            }}
+          />
         </S.ContainerSection>
       </S.Container>
 
       <Button
         title="Adicionar"
         variant="primary"
-        onPress={() => modalRef.current?.toggleVisible()}
+        onPress={() => {
+          // @ts-ignore
+          navigation.navigate(Routes.CREATE_EDIT_STATEMENTS, {
+            maximumDate,
+            minimumDate,
+          });
+        }}
       />
-
-      <Modal ref={modalRef}>
-        <Form onSubmit={data => console.log(data)} ref={formRef}>
-          <S.FormContainer>
-            <S.FormInputsContainer>
-              <S.FormItem>
-                <CurrencyInput name="value" placeholder="Valor" />
-              </S.FormItem>
-              <S.FormItem>
-                <Dropdown
-                  placeholder="Tipo"
-                  options={statementTypes?.data?.map(statementType => ({
-                    title: statementType.description,
-                    value: statementType.id,
-                  }))}
-                  name="statementType"
-                />
-              </S.FormItem>
-
-              <S.FormItem>
-                <DatePicker
-                  placeholder="Data"
-                  name="statementDate"
-                  maximumDate={maximumDate}
-                  minimumDate={minimumDate}
-                />
-              </S.FormItem>
-            </S.FormInputsContainer>
-
-            <Button
-              title="Salvar"
-              variant="primary"
-              onPress={() => formRef.current?.submitForm?.()}
-            />
-          </S.FormContainer>
-        </Form>
-      </Modal>
     </React.Fragment>
   );
 };

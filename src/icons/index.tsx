@@ -1,4 +1,5 @@
 import React from 'react';
+import { KeyOfThemeColor } from '../styles';
 import ArrowDown from './ArrowDown';
 import ArrowLeft from './ArrowLeft';
 import ArrowRight from './ArrowRight';
@@ -7,10 +8,11 @@ import Calendar from './Calendar';
 import ChevronDown from './ChevronDown';
 import Close from './Close';
 import Filter from './Filter';
+import Trash from './Trash';
 
 interface Props {
   size?: number;
-  color?: string;
+  color?: KeyOfThemeColor;
 }
 
 const icons = {
@@ -22,6 +24,7 @@ const icons = {
   CHEVRON_DOWN: (props?: Props) => <ChevronDown {...props} />,
   CALENDAR: (props?: Props) => <Calendar {...props} />,
   CLOSE: (props?: Props) => <Close {...props} />,
+  TRASH: (props?: Props) => <Trash {...props} />,
 };
 
 export default icons;
