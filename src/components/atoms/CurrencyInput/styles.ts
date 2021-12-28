@@ -28,5 +28,7 @@ export const CurrencyInput = styled.TextInput`
   ${({ theme }) => css`
     font-family: ${FontName.REGULAR};
     color: ${theme.colors.white};
+    font-size: 16px;
+    padding: 0;
   `}
 `;
