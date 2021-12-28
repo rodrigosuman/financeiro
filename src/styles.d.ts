@@ -7,6 +7,7 @@ export interface ThemeColor {
   secondary: string;
   white: string;
   danger: string;
+  error: string;
   success: string;
 }
 
