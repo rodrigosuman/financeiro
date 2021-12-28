@@ -1,9 +1,16 @@
+import { FormHandles } from '@unform/core';
+import { Form } from '@unform/mobile';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 import Button from '../../components/atoms/Button';
+import CurrencyInput from '../../components/atoms/CurrencyInput';
+import DatePicker from '../../components/atoms/DatePicker';
+import Dropdown from '../../components/atoms/Dropdown';
 import Card from '../../components/molecules/Card';
 import Flutuation from '../../components/molecules/Flutuation';
+import Modal from '../../components/molecules/Modal/Modal';
+import { ModalRefProps } from '../../components/molecules/Modal/types';
 import MounthPagination from '../../components/molecules/MounthPagination/MounthPagination';
 import MounthResume from '../../components/molecules/MounthResume';
 import { MounthResumeProps } from '../../components/molecules/MounthResume/types';
@@ -23,6 +30,8 @@ const MounthlyStatements: React.FC = () => {
   const navigation = useNavigation();
   const currencyFormater = useCurrencyFormater('BRL');
   const dispatch = useDispatch();
+  const formRef = React.useRef<FormHandles>({} as FormHandles);
+  const modalRef = React.useRef<ModalRefProps>({ toggleVisible: () => {} });
 
   const { balance, data, isLoading } = useSelector(state => state.statements);
 
@@ -125,7 +134,61 @@ const MounthlyStatements: React.FC = () => {
         </S.ContainerSection>
       </S.Container>
 
-      <Button title="Adicionar" variant="primary" onPress={() => {}} />
+      <Button
+        title="Adicionar"
+        variant="primary"
+        onPress={() => modalRef.current?.toggleVisible()}
+      />
+
+      <Modal ref={modalRef}>
+        <Form onSubmit={data => console.log(data)} ref={formRef}>
+          <S.FormContainer>
+            <S.FormInputsContainer>
+              <S.FormItem>
+                <CurrencyInput name="value" placeholder="Valor" />
+              </S.FormItem>
+              <S.FormItem>
+                <Dropdown
+                  placeholder="Tipo"
+                  options={[
+                    { title: '1', value: 1 },
+                    { title: '2', value: 2 },
+                    { title: '2', value: 2 },
+                    { title: '2', value: 2 },
+                    { title: '2', value: 2 },
+                    { title: '2', value: 2 },
+                    { title: '2', value: 2 },
+                    { title: '2', value: 2 },
+                    { title: '2', value: 2 },
+                    { title: '2', value: 2 },
+                    { title: '2', value: 2 },
+                    { title: '2', value: 2 },
+                    { title: '2', value: 2 },
+                    { title: '2', value: 2 },
+                    { title: '2', value: 2 },
+                  ]}
+                  onValue={console.log}
+                  name="statementType"
+                />
+              </S.FormItem>
+
+              <S.FormItem>
+                <DatePicker
+                  placeholder="Data"
+                  onValue={console.log}
+                  name="statementDate"
+                />
+              </S.FormItem>
+            </S.FormInputsContainer>
+
+            <Button
+              title="Salvar"
+              variant="primary"
+              onPress={() => formRef.current?.submitForm?.()}
+            />
+          </S.FormContainer>
+        </Form>
+      </Modal>
     </React.Fragment>
   );
 };

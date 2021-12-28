@@ -71,6 +71,8 @@ const DatePicker: React.FC<DatePickerProps> = props => {
           mode="date"
           is24Hour={true}
           display="spinner"
+          minimumDate={props.minimumDate}
+          maximumDate={props.maximumDate}
           onChange={(event, date: any) => {
             handleChangeDate(date ? new Date(date) : selectedDate);
           }}
