@@ -3,6 +3,8 @@ export type StatementFormData = {
   statementType: string;
   statementDate: string;
   frequency?: string;
+  id?: string;
+  status?: 'PAID' | 'NOT_PAID';
 };
 
 export interface StatementCreateEditFormProps {

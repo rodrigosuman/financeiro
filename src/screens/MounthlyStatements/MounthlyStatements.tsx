@@ -5,7 +5,6 @@ import { useDispatch } from 'react-redux';
 import Button from '../../components/atoms/Button';
 import Card from '../../components/molecules/Card';
 import Flutuation from '../../components/molecules/Flutuation';
-import { ModalRefProps } from '../../components/molecules/Modal/types';
 import MounthPagination from '../../components/molecules/MounthPagination/MounthPagination';
 import MounthResume from '../../components/molecules/MounthResume';
 import { MounthResumeProps } from '../../components/molecules/MounthResume/types';
@@ -18,21 +17,17 @@ import useSelector from '../../hooks/useSelector';
 import icons from '../../icons';
 import {
   getAsyncMounthStatementsAction,
-  setMounthStatementsIsLoadingAction
+  setMounthStatementsIsLoadingAction,
+  setStatementsIsSendingAction
 } from '../../redux-store/redux-actions/statements';
 import { getAsyncStatementTypesAction } from '../../redux-store/redux-actions/statementTypes';
-import { StatementCreateEditFormRef } from '../StatmentCreateEditForm/types';
+import { APIStatementType } from '../../types';
 import * as S from './styles';
 
 const MounthlyStatements: React.FC = () => {
   const navigation = useNavigation();
   const currencyFormater = useCurrencyFormater('BRL');
   const dispatch = useDispatch();
-
-  const modalRef = React.useRef<ModalRefProps>({ toggleVisible: () => {} });
-  const statementFormRef = React.useRef<StatementCreateEditFormRef>({
-    setInitialData: () => {},
-  });
 
   const { balance, data, isLoading } = useSelector(state => state.statements);
 
@@ -44,7 +39,7 @@ const MounthlyStatements: React.FC = () => {
   const balanceFlutuation = FLUTUATION;
 
   const statements: StatementItem[] = STATEMENTS.map(statement => ({
-    statamenteDate: new Date(statement.statementDate),
+    statamenteDate: new Date(statement.statementDate + 'T23:59'),
     status: statement.status,
     title: statement.statementType?.description,
     type: statement.statementType?.type,
@@ -105,8 +100,24 @@ const MounthlyStatements: React.FC = () => {
 
   const maximumDate = lastDayOfMonth(statementDate);
   const MOUNTH = maximumDate.getMonth() + 1;
-  const minimumDate = new Date(
-    `${maximumDate.getFullYear()}-${MOUNTH > 9 ? MOUNTH : `0${MOUNTH}`}-01`,
+
+  const minimumDate = React.useMemo(() => {
+    return new Date(
+      `${maximumDate.getFullYear()}-${MOUNTH > 9 ? MOUNTH : `0${MOUNTH}`}-01`,
+    );
+  }, [MOUNTH, maximumDate]);
+
+  const navigateToCreateEditForm = React.useCallback(
+    (statement?: APIStatementType) => {
+      dispatch(setStatementsIsSendingAction(undefined));
+      // @ts-ignore
+      navigation.navigate(Routes.CREATE_EDIT_STATEMENTS, {
+        maximumDate,
+        minimumDate,
+        statement,
+      });
+    },
+    [dispatch, maximumDate, minimumDate, navigation],
   );
 
   return (
@@ -149,12 +160,7 @@ const MounthlyStatements: React.FC = () => {
             onItemPress={statement => {
               try {
                 const _statement = data?.find(item => item.id === statement.id);
-                // @ts-ignore
-                navigation.navigate(Routes.CREATE_EDIT_STATEMENTS, {
-                  maximumDate,
-                  minimumDate,
-                  statement: _statement,
-                });
+                navigateToCreateEditForm(_statement);
               } catch (error) {}
             }}
           />
@@ -165,11 +171,7 @@ const MounthlyStatements: React.FC = () => {
         title="Adicionar"
         variant="primary"
         onPress={() => {
-          // @ts-ignore
-          navigation.navigate(Routes.CREATE_EDIT_STATEMENTS, {
-            maximumDate,
-            minimumDate,
-          });
+          navigateToCreateEditForm();
         }}
       />
     </React.Fragment>

@@ -118,11 +118,12 @@ const Dashboard: React.FC = () => {
   const debts = currencyFormater.format(DEBTS);
   const debtsPercent = (DEBTS / BALANCE) * 100;
   const statements: StatementItem[] = STATEMENTS.map(statement => ({
-    statamenteDate: new Date(statement.statementDate),
+    statamenteDate: new Date(statement.statementDate + 'T23:59'),
     status: statement.status,
     title: statement.statementType?.description,
     type: statement.statementType?.type,
     value: statement.value,
+    id: statement.id,
   }));
 
   const chartData = CHART.map(chartItem => ({

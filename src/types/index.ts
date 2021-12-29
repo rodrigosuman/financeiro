@@ -47,9 +47,10 @@ export type APIDeleteStatementResponse = {
 
 export type APIPostOrPatchStatements = {
   statementType: string;
-  statementDate: Date;
+  statementDate: string;
   value: number;
   comments?: string[];
+  id?: string;
 };
 
 export type APIStatementTypes = {
@@ -59,4 +60,20 @@ export type APIStatementTypes = {
   description: string;
   type: 'CREDIT' | 'DEBT';
   frequency: 'FIXED' | 'VARIABLE';
+};
+
+export type APICreateStatementRequest = {
+  statementType: string;
+  statementDate: Date | string;
+  value: number;
+  comments?: string[];
+};
+
+export type APIPatchStatementRequest = {
+  statementType: string;
+  statementDate: Date | string;
+  value: number;
+  comments?: string[];
+  id: string;
+  status?: 'NOT_PAID' | 'PAID';
 };

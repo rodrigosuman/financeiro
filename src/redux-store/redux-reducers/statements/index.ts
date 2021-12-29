@@ -9,6 +9,7 @@ const INITIAL_STATE: StatementsState = {
     total: 0,
   },
   isLoading: false,
+  isSending: undefined,
 };
 
 const reducer: Reducer<StatementsState, any> = (
@@ -20,11 +21,15 @@ const reducer: Reducer<StatementsState, any> = (
       return {
         data: action.payload.data,
         isLoading: false,
+        isSending: false,
         balance: action.payload.balance,
       };
 
     case ReduxActions.SET_MOUNTH_STATEMENTS_IS_LOADING:
       return { ...state, isLoading: action.payload.isLoading };
+
+    case ReduxActions.SET_STATEMENTS_IS_SENDING:
+      return { ...state, isSending: action.payload.isSending };
 
     case ReduxActions.SET_MOUNTH_STATEMENTS_BALANCE:
       return { ...state, balance: action.payload.balance };

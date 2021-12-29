@@ -6,4 +6,5 @@ export interface ButtonProps {
   onPress: () => void;
   title: string;
   variant?: ButtonVariant;
+  isSending?: boolean;
 }
