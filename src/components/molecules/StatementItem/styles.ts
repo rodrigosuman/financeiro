@@ -5,7 +5,7 @@ import { ItemStatus } from './types';
 
 export const Container = styled.TouchableOpacity<{ status: ItemStatus }>`
   ${({ status }) => css`
-    opacity: ${status === 'NOT_PAID' ? 1 : 0.25};
+    opacity: ${status === 'NOT_PAID' ? 1 : 0.38};
     margin-bottom: 10px;
   `}
 `;
@@ -46,7 +46,7 @@ export const ItemTitle = styled(DefaultText)`
 
 export const StatementDateText = styled(SmallText)`
   ${({ theme }) => css`
-    color: ${theme.colors.white}50;
+    color: ${theme.colors.secondary};
     margin-top: -4px;
   `}
 `;

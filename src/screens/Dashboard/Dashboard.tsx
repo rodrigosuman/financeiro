@@ -185,7 +185,7 @@ const Dashboard: React.FC = () => {
             <PieChart
               data={chartData}
               accessor="total"
-              height={250}
+              height={270}
               width={Dimensions.get('screen').width}
               backgroundColor={'transparent'}
               paddingLeft={'15'}
