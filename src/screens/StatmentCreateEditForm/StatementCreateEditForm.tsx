@@ -186,24 +186,22 @@ const StatmentCreateEditForm: React.ForwardRefRenderFunction<
               </S.FormItem>
             )}
 
-            {params?.statement?.id && (
-              <S.FormItem>
-                <Dropdown
-                  placeholder="Status"
-                  options={[
-                    {
-                      title: 'Pago',
-                      value: 'PAID',
-                    },
-                    {
-                      title: 'Não pago',
-                      value: 'NOT_PAID',
-                    },
-                  ]}
-                  name="status"
-                />
-              </S.FormItem>
-            )}
+            <S.FormItem>
+              <Dropdown
+                placeholder="Status"
+                options={[
+                  {
+                    title: 'Pago',
+                    value: 'PAID',
+                  },
+                  {
+                    title: 'Não pago',
+                    value: 'NOT_PAID',
+                  },
+                ]}
+                name="status"
+              />
+            </S.FormItem>
 
             <S.FormItem>
               <CurrencyInput name="value" placeholder="Valor" />

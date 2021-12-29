@@ -1,6 +1,6 @@
 const statementFrequency = [
   {
-    title: 'A cada 15 dias.',
+    title: 'A cada 15 dias',
     value: 'REPEAT_EVERY_15_DAYS',
   },
   {
