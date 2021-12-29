@@ -34,9 +34,12 @@ const MounthlyStatements: React.FC = () => {
   const BALANCE = balance?.total || 0;
   const FLUTUATION = balance?.flutuation || 0;
   const STATEMENTS = data || [];
+  const CURRENT_DATE = new Date();
 
   const _balance = currencyFormater.format(BALANCE);
   const balanceFlutuation = FLUTUATION;
+  const _year = React.useRef<number>(CURRENT_DATE.getFullYear());
+  const _mounth = React.useRef<number>(CURRENT_DATE.getMonth() + 1);
 
   const statements: StatementItem[] = STATEMENTS.map(statement => ({
     statamenteDate: new Date(statement.statementDate + 'T23:59'),
@@ -49,6 +52,8 @@ const MounthlyStatements: React.FC = () => {
 
   const getStatements = React.useCallback(
     (year: number, mounth: number) => {
+      _year.current = year;
+      _mounth.current = mounth;
       dispatch(setMounthStatementsIsLoadingAction(true));
       dispatch(getAsyncMounthStatementsAction(year, mounth));
     },
@@ -94,16 +99,20 @@ const MounthlyStatements: React.FC = () => {
     dispatch(getAsyncStatementTypesAction());
   }, [dispatch, getStatements]);
 
+  const mountMounth = (mount: number) => {
+    return mount > 9 ? mount : `0${mount}`;
+  };
+
   const statementDate = data?.[0]?.statementDate
-    ? new Date(data?.[0]?.statementDate)
-    : new Date();
+    ? new Date(data?.[0]?.statementDate + 'T23:59')
+    : new Date(`${_year.current}-${mountMounth(_mounth.current)}-10T23:59`);
 
   const maximumDate = lastDayOfMonth(statementDate);
   const MOUNTH = maximumDate.getMonth() + 1;
 
   const minimumDate = React.useMemo(() => {
     return new Date(
-      `${maximumDate.getFullYear()}-${MOUNTH > 9 ? MOUNTH : `0${MOUNTH}`}-01`,
+      `${maximumDate.getFullYear()}-${mountMounth(MOUNTH)}-01T00:00`,
     );
   }, [MOUNTH, maximumDate]);
 
