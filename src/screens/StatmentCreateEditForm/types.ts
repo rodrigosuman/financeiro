@@ -2,7 +2,11 @@ export type StatementFormData = {
   value: string;
   statementType: string;
   statementDate: string;
-  frequency?: string;
+  frequency?:
+    | 'REPEAT_EVERY_15_DAYS'
+    | 'REPEAT_MONTHLY'
+    | 'REPEAT_QUARTERLY'
+    | 'REPEAT_ANNUALLY';
   id?: string;
   status?: 'PAID' | 'NOT_PAID';
 };

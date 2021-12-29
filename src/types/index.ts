@@ -1,3 +1,9 @@
+type Frequency =
+  | 'REPEAT_EVERY_15_DAYS'
+  | 'REPEAT_MONTHLY'
+  | 'REPEAT_QUARTERLY'
+  | 'REPEAT_ANNUALLY';
+
 export type APIStatementType = {
   id: string;
   createdAt: string;
@@ -46,11 +52,15 @@ export type APIDeleteStatementResponse = {
 };
 
 export type APIPostOrPatchStatements = {
-  statementType: string;
-  statementDate: string;
-  value: number;
-  comments?: string[];
-  id?: string;
+  statement: {
+    statementType: string;
+    statementDate: string;
+    value: number;
+    comments?: string[];
+    id?: string;
+    frequency?: Frequency;
+  };
+  frequency?: Frequency;
 };
 
 export type APIStatementTypes = {
@@ -67,6 +77,8 @@ export type APICreateStatementRequest = {
   statementDate: Date | string;
   value: number;
   comments?: string[];
+  status?: 'NOT_PAID' | 'PAID';
+  frequency?: Frequency;
 };
 
 export type APIPatchStatementRequest = {

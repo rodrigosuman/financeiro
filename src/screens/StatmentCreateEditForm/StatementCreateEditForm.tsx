@@ -104,6 +104,8 @@ const StatmentCreateEditForm: React.ForwardRefRenderFunction<
             statementDate: data.statementDate,
             statementType: data.statementType,
             value: Number(data.value),
+            status: data.status,
+            frequency: data.frequency,
           }),
         );
       }

@@ -41,8 +41,12 @@ export function* asyncCreateStatements(args: {
 
     yield call(() =>
       postStatements({
-        ...statement,
-        statementDate: format(statement.statementDate, 'yyyy/MM/dd'),
+        statement: {
+          ...statement,
+          statementDate: format(statement.statementDate, 'yyyy/MM/dd'),
+          frequency: undefined,
+        },
+        frequency: statement.frequency,
       }),
     );
 
