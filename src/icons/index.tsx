@@ -8,6 +8,7 @@ import Calendar from './Calendar';
 import ChevronDown from './ChevronDown';
 import Close from './Close';
 import Filter from './Filter';
+import Minus from './Minus';
 import Trash from './Trash';
 
 interface Props {
@@ -25,6 +26,7 @@ const icons = {
   CALENDAR: (props?: Props) => <Calendar {...props} />,
   CLOSE: (props?: Props) => <Close {...props} />,
   TRASH: (props?: Props) => <Trash {...props} />,
+  MINUS: (props?: Props) => <Minus {...props} />,
 };
 
 export default icons;

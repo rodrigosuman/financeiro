@@ -1,6 +1,6 @@
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useField } from '@unform/core';
-import { format, parseISO } from 'date-fns';
+import { format } from 'date-fns';
 import React from 'react';
 import icons from '../../../icons';
 import * as S from './styles';
@@ -42,7 +42,7 @@ const DatePicker: React.FC<DatePickerProps> = props => {
       },
       setValue(ref, value: string) {
         if (datePickerRef.current) {
-          value && setSelectedDate(parseISO(value));
+          value && setSelectedDate(new Date(value));
           datePickerRef.current.value = value;
         }
       },

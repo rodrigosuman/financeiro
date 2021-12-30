@@ -1,3 +1,4 @@
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { addMonths, format } from 'date-fns';
 import brazilianLocale from 'date-fns/locale/pt-BR';
 import React from 'react';
@@ -9,6 +10,7 @@ import { MounthPaginationProps } from './types';
 const MounthPagination: React.FC<MounthPaginationProps> = props => {
   const { onPaginate } = props;
   const [date, setDate] = React.useState<Date>(new Date());
+  const [show, setShow] = React.useState<boolean>(false);
 
   const _formatedDate = format(date, 'MMMM', {
     locale: brazilianLocale,
@@ -18,40 +20,67 @@ const MounthPagination: React.FC<MounthPaginationProps> = props => {
     locale: brazilianLocale,
   });
 
+  const handleOnPaginate = React.useCallback(
+    (date: Date) => {
+      if (typeof onPaginate === 'function') {
+        onPaginate?.({
+          year: date.getFullYear(),
+          mounth: date.getMonth() + 1,
+        });
+      }
+    },
+    [onPaginate],
+  );
+
   const handleMounth = React.useCallback(
     (handle: number) => {
       setDate(old => {
         const newDate = addMonths(old, handle);
 
-        if (typeof onPaginate === 'function') {
-          onPaginate?.({
-            year: newDate.getFullYear(),
-            mounth: newDate.getMonth() + 1,
-          });
-        }
-
+        handleOnPaginate(newDate);
         return newDate;
       });
     },
-    [onPaginate],
+    [handleOnPaginate],
   );
 
   return (
-    <S.Container>
-      <S.HandlersWrapper>
+    <React.Fragment>
+      <S.Container>
         <TouchableOpacity onPress={() => handleMounth(-1)}>
-          {icons.ARROW_LEFT()}
+          <S.IconWrapper>{icons.ARROW_LEFT()}</S.IconWrapper>
         </TouchableOpacity>
-        <S.MounthTitle>{_formatedDate}</S.MounthTitle>
-        <TouchableOpacity onPress={() => handleMounth(1)}>
-          {icons.ARROW_RIGHT()}
-        </TouchableOpacity>
-      </S.HandlersWrapper>
 
-      <S.MounthTitleWrapper>
-        <S.YearText>{_formatedYear}</S.YearText>
-      </S.MounthTitleWrapper>
-    </S.Container>
+        <S.HandlersWrapper onPressOut={() => setShow(true)}>
+          <S.MounthTitle>{_formatedDate}</S.MounthTitle>
+          <S.MounthTitleWrapper>
+            <S.YearText>{_formatedYear}</S.YearText>
+          </S.MounthTitleWrapper>
+        </S.HandlersWrapper>
+
+        <TouchableOpacity onPress={() => handleMounth(1)}>
+          <S.IconWrapper>{icons.ARROW_RIGHT()}</S.IconWrapper>
+        </TouchableOpacity>
+      </S.Container>
+
+      {show && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode="date"
+          display="spinner"
+          onChange={(event, newDate: any) => {
+            setShow(false);
+            if (newDate) {
+              setDate(newDate);
+              handleOnPaginate(newDate);
+            } else {
+              setDate(date);
+            }
+          }}
+        />
+      )}
+    </React.Fragment>
   );
 };
 

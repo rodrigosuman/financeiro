@@ -13,7 +13,6 @@ const CurrencyInput: React.FC<CurrencyInputProps> = props => {
 
   const inputRef = React.useRef<any>(null);
   const [value, setValue] = React.useState<string>();
-  const formatedValue = value ? currencyFormater.format(value) : '';
 
   const { fieldName, registerField, error } = useField(name);
 
@@ -42,7 +41,7 @@ const CurrencyInput: React.FC<CurrencyInputProps> = props => {
       setValue(ref, value: string) {
         if (inputRef.current) {
           setValue(value);
-          inputRef.current.value = value;
+          inputRef.current.value = Number(value);
         }
       },
       clearValue() {

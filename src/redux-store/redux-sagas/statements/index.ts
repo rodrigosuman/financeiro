@@ -45,8 +45,10 @@ export function* asyncCreateStatements(args: {
           ...statement,
           statementDate: format(statement.statementDate, 'yyyy/MM/dd'),
           frequency: undefined,
+          customValues: undefined,
         },
         frequency: statement.frequency,
+        customValues: statement.customValues,
       }),
     );
 

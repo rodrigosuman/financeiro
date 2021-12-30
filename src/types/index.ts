@@ -59,8 +59,10 @@ export type APIPostOrPatchStatements = {
     comments?: string[];
     id?: string;
     frequency?: Frequency;
+    customValues?: any;
   };
   frequency?: Frequency;
+  customValues?: any;
 };
 
 export type APIStatementTypes = {
@@ -79,6 +81,7 @@ export type APICreateStatementRequest = {
   comments?: string[];
   status?: 'NOT_PAID' | 'PAID';
   frequency?: Frequency;
+  customValues?: { value: number; statementDate: string }[];
 };
 
 export type APIPatchStatementRequest = {

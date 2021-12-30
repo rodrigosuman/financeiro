@@ -9,6 +9,7 @@ export type StatementFormData = {
     | 'REPEAT_ANNUALLY';
   id?: string;
   status?: 'PAID' | 'NOT_PAID';
+  customValues?: { value: number; statementDate: string }[];
 };
 
 export interface StatementCreateEditFormProps {

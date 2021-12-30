@@ -212,6 +212,7 @@ const Dashboard: React.FC = () => {
         title="Lançamentos"
         variant="success"
         onPress={() => navigation.navigate(Routes.STATEMENTS)}
+        isSending={isLoading}
       />
     </React.Fragment>
   );
