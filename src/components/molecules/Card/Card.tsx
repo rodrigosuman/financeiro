@@ -6,7 +6,7 @@ import { CardProps } from './types';
 const Card: React.FC<CardProps> = props => {
   const { title, right } = props.headerProps;
   return (
-    <S.Container variant={props.variant}>
+    <S.Container variant={props.variant} light={props.light}>
       <S.CardHeader>
         <S.CardTitle>{title}</S.CardTitle>
         {typeof right === 'function' ? right() : <></>}

@@ -4,12 +4,13 @@ import { CardVariant } from './types';
 
 interface ContainerProps {
   variant?: CardVariant;
+  light?: boolean;
 }
 
 export const Container = styled.View<ContainerProps>`
-  ${({ theme, variant }) => css`
+  ${({ theme, variant, light = false }) => css`
     padding: 8px;
-    background-color: ${variant ? theme.colors[variant] : theme.colors.bgLight};
+    background-color: ${variant ? theme.colors[variant] : theme.colors.bgLight}${light ? 50 : ''};
   `}
 `;
 

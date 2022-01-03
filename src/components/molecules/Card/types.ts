@@ -9,4 +9,5 @@ export interface CardProps {
   };
   variant?: CardVariant;
   isLoading?: boolean;
+  light?: boolean;
 }

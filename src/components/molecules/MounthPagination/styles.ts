@@ -4,7 +4,7 @@ import SmallText from '../../atoms/SmallText';
 
 export const Container = styled.View`
   ${({ theme }) => css`
-    background-color: ${theme.colors.white}09;
+    background-color: ${theme.colors.bgLight}50;
     width: 100%;
 
     align-items: center;

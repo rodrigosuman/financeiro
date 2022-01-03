@@ -161,6 +161,7 @@ const MounthlyStatements: React.FC = () => {
         <S.ContainerSection>
           <Card
             isLoading={isLoading}
+            light
             headerProps={{
               title: 'Saldo estimado',
               right: () => (
