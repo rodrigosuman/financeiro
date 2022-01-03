@@ -10,6 +10,14 @@ export const ContainerSection = styled.View`
   margin-bottom: 20px;
 `;
 
+export const EstimateBalanceView = styled.View`
+  /* flex-direction: row; */
+`;
+
+export const EstimateBalanceViewItem = styled.View`
+  flex: 1;
+`;
+
 export const CardText = styled(StrongText)`
   ${({ theme }) => css`
     color: ${theme.colors.white};

@@ -18,6 +18,7 @@ export type APIStatementType = {
 export type APIBalance = {
   total: number;
   flutuation: number;
+  estimate: number;
 };
 
 export type APIChart = {

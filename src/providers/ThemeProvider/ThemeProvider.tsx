@@ -9,8 +9,8 @@ export const theme: IThemeProvider = {
     primary: '#461A7E',
     secondary: '#DAD4FC',
     white: '#FFFFFF',
-    danger: '#BB4771',
-    success: '#2EBD67',
+    danger: '#ff40c6',
+    success: '#8cff3b',
     error: '#F44968',
   },
 };

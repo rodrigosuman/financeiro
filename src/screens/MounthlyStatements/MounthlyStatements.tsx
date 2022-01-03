@@ -32,11 +32,13 @@ const MounthlyStatements: React.FC = () => {
   const { balance, data, isLoading } = useSelector(state => state.statements);
 
   const BALANCE = balance?.total || 0;
+  const ESTIMATE = balance?.estimate || 0;
   const FLUTUATION = balance?.flutuation || 0;
   const STATEMENTS = data || [];
   const CURRENT_DATE = new Date();
 
   const _balance = currencyFormater.format(BALANCE);
+  const _estimate = currencyFormater.format(ESTIMATE);
   const balanceFlutuation = FLUTUATION;
   const _year = React.useRef<number>(CURRENT_DATE.getFullYear());
   const _mounth = React.useRef<number>(CURRENT_DATE.getMonth() + 1);
@@ -151,6 +153,16 @@ const MounthlyStatements: React.FC = () => {
             isLoading={isLoading}
             headerProps={{
               title: 'Saldo em conta',
+            }}>
+            <S.CardText>{_balance}</S.CardText>
+          </Card>
+        </S.ContainerSection>
+
+        <S.ContainerSection>
+          <Card
+            isLoading={isLoading}
+            headerProps={{
+              title: 'Saldo estimado',
               right: () => (
                 <Flutuation
                   isLoading={isLoading}
@@ -158,7 +170,7 @@ const MounthlyStatements: React.FC = () => {
                 />
               ),
             }}>
-            <S.CardText>{_balance}</S.CardText>
+            <S.CardText>{_estimate}</S.CardText>
           </Card>
         </S.ContainerSection>
 

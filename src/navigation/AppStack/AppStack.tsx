@@ -3,7 +3,6 @@ import React from 'react';
 import { useTheme } from 'styled-components';
 import FontName from '../../constants/fontNames';
 import Routes from '../../constants/routesPath';
-import Dashboard from '../../screens/Dashboard/Dashboard';
 import MounthlyStatements from '../../screens/MounthlyStatements/MounthlyStatements';
 import StatementCreateEditForm from '../../screens/StatmentCreateEditForm/StatementCreateEditForm';
 
@@ -21,17 +20,7 @@ const AppStack: React.FC = () => {
   const theme = useTheme();
 
   return (
-    <Stack.Navigator initialRouteName={Routes.DASHBOARD}>
-      <Stack.Screen
-        options={{
-          headerShown: false,
-          contentStyle: {
-            backgroundColor: theme.colors.bgDark,
-          },
-        }}
-        name={Routes.DASHBOARD}
-        component={Dashboard}
-      />
+    <Stack.Navigator initialRouteName={Routes.STATEMENTS}>
       <Stack.Screen
         options={{
           title: 'Lançamentos',
