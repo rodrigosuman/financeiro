@@ -22,5 +22,6 @@ export const CardText = styled(StrongText)`
   ${({ theme }) => css`
     color: ${theme.colors.white};
     text-align: center;
+    height: 30px;
   `}
 `;

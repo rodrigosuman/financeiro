@@ -1,5 +1,6 @@
 import { Reducer } from 'redux';
 import ReduxActions from '../../../constants/reduxActions';
+import { APIStatementType } from '../../../types';
 import { StatementsState } from './types';
 
 const INITIAL_STATE: StatementsState = {
@@ -7,9 +8,25 @@ const INITIAL_STATE: StatementsState = {
   balance: {
     flutuation: 0,
     total: 0,
+    estimate: 0,
   },
   isLoading: false,
   isSending: undefined,
+};
+
+export const sumDebts = (data?: APIStatementType[]) => {
+  let debts = 0;
+
+  data?.forEach(statement => {
+    if (
+      statement.statementType.type === 'DEBT' &&
+      statement.status === 'NOT_PAID'
+    ) {
+      debts += statement.value;
+    }
+  });
+
+  return debts;
 };
 
 const reducer: Reducer<StatementsState, any> = (

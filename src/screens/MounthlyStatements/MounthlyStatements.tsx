@@ -21,6 +21,7 @@ import {
   setStatementsIsSendingAction
 } from '../../redux-store/redux-actions/statements';
 import { getAsyncStatementTypesAction } from '../../redux-store/redux-actions/statementTypes';
+import { sumDebts } from '../../redux-store/redux-reducers/statements';
 import { APIStatementType } from '../../types';
 import * as S from './styles';
 
@@ -36,7 +37,9 @@ const MounthlyStatements: React.FC = () => {
   const FLUTUATION = balance?.flutuation || 0;
   const STATEMENTS = data || [];
   const CURRENT_DATE = new Date();
+  const DEBTS = sumDebts(data);
 
+  const _debts = currencyFormater.format(DEBTS);
   const _balance = currencyFormater.format(BALANCE);
   const _estimate = currencyFormater.format(ESTIMATE);
   const balanceFlutuation = FLUTUATION;
@@ -161,6 +164,25 @@ const MounthlyStatements: React.FC = () => {
         <S.ContainerSection>
           <Card
             isLoading={isLoading}
+            variant="danger"
+            light
+            headerProps={{
+              title: 'Total a pagar',
+              right: () => (
+                <Flutuation
+                  isLoading={isLoading}
+                  flutuation={(DEBTS / BALANCE) * 100}
+                  showIcon={false}
+                />
+              ),
+            }}>
+            <S.CardText>{_debts}</S.CardText>
+          </Card>
+        </S.ContainerSection>
+
+        <S.ContainerSection>
+          <Card
+            isLoading={isLoading}
             light
             headerProps={{
               title: 'Saldo estimado',
@@ -192,6 +214,7 @@ const MounthlyStatements: React.FC = () => {
       <Button
         title="Adicionar"
         variant="primary"
+        isSending={isLoading}
         onPress={() => {
           navigateToCreateEditForm();
         }}
