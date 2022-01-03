@@ -8,6 +8,7 @@ export type StatementFormData = {
     | 'REPEAT_QUARTERLY'
     | 'REPEAT_ANNUALLY';
   id?: string;
+  comments?: string[];
   status?: 'PAID' | 'NOT_PAID';
   customValues?: { value: number; statementDate: string }[];
 };

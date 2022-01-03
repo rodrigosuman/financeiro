@@ -39,6 +39,8 @@ export function* asyncCreateStatements(args: {
     const MOUNTH = statement.statementDate.getMonth() + 1;
     const YEAR = statement.statementDate.getFullYear();
 
+    console.log('asyncCreateStatements', { statement });
+
     yield call(() =>
       postStatements({
         statement: {
@@ -68,6 +70,8 @@ export function* asyncPatchStatements(args: {
 
     const MOUNTH = statement.statementDate.getMonth() + 1;
     const YEAR = statement.statementDate.getFullYear();
+
+    console.log('asyncPatchStatements', { statement });
 
     yield call(() =>
       patchStatements(statement.id, {

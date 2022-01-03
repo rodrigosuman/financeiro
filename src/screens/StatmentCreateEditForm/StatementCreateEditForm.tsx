@@ -10,6 +10,7 @@ import CurrencyInput from '../../components/atoms/CurrencyInput';
 import DatePicker from '../../components/atoms/DatePicker';
 import Dropdown from '../../components/atoms/Dropdown';
 import Loading from '../../components/atoms/Loading/Loading';
+import TextArea from '../../components/atoms/TextArea';
 import statementFrequency, {
   FrequencyType
 } from '../../constants/statementsFrequency';
@@ -133,6 +134,7 @@ const StatmentCreateEditForm: React.ForwardRefRenderFunction<
     formRef.current?.setData({
       ...data,
       statementDate: `${date}T23:59`,
+      comments: data.comments,
       status: data.status,
     });
   }, []);
@@ -156,6 +158,7 @@ const StatmentCreateEditForm: React.ForwardRefRenderFunction<
           statementType: data.statementType,
           value: Number(data.value),
           status: data.status,
+          comments: data.comments || [],
         }),
       );
     },
@@ -173,6 +176,7 @@ const StatmentCreateEditForm: React.ForwardRefRenderFunction<
             statementType: data.statementType,
             value: data.value,
             status: data.status,
+            comments: data.comments || [],
           }),
         );
       } else {
@@ -184,6 +188,7 @@ const StatmentCreateEditForm: React.ForwardRefRenderFunction<
             status: data.status,
             frequency: data.frequency,
             customValues: data.customValues,
+            comments: data.comments || [],
           }),
         );
       }
@@ -292,6 +297,7 @@ const StatmentCreateEditForm: React.ForwardRefRenderFunction<
         statementType: statement.statementType.id,
         value: String(statement.value),
         status: statement.status,
+        comments: statement.comments || [],
       });
     }
   }, [params, setInitialData]);
@@ -347,6 +353,10 @@ const StatmentCreateEditForm: React.ForwardRefRenderFunction<
             )}
 
             <FormValueAndDate params={params} />
+
+            <S.FormItem>
+              <TextArea placeholder="Descrição" name="comments[0]" />
+            </S.FormItem>
 
             {frequency === 'CUSTOM' && (
               <S.CustomValuesWrapper>
