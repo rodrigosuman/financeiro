@@ -5,4 +5,6 @@ export interface StatementsListProps {
   statements: StatementItem[];
   isLoading?: boolean;
   onItemPress?: (statement: StatementItem) => void;
+  multSelect?: boolean;
+  onCheckPress?: (checked: boolean, statement: StatementItem) => void;
 }

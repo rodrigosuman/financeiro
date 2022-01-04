@@ -12,16 +12,15 @@ const INITIAL_STATE: StatementsState = {
   },
   isLoading: false,
   isSending: undefined,
+  multSelectedStatements: [],
+  isMultSelect: false,
 };
 
 export const sumDebts = (data?: APIStatementType[]) => {
   let debts = 0;
 
   data?.forEach(statement => {
-    if (
-      statement.statementType.type === 'DEBT' &&
-      statement.status === 'NOT_PAID'
-    ) {
+    if (statement.statementType.type === 'DEBT' && statement.status === 'NOT_PAID') {
       debts += statement.value;
     }
   });
@@ -29,13 +28,11 @@ export const sumDebts = (data?: APIStatementType[]) => {
   return debts;
 };
 
-const reducer: Reducer<StatementsState, any> = (
-  state = INITIAL_STATE,
-  action,
-) => {
+const reducer: Reducer<StatementsState, any> = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case ReduxActions.SET_MOUNTH_STATEMENTS:
       return {
+        ...state,
         data: action.payload.data,
         isLoading: false,
         isSending: false,
@@ -50,6 +47,28 @@ const reducer: Reducer<StatementsState, any> = (
 
     case ReduxActions.SET_MOUNTH_STATEMENTS_BALANCE:
       return { ...state, balance: action.payload.balance };
+
+    case ReduxActions.SET_STATEMENT_IS_MULT_SELECT:
+      return {
+        ...state,
+        isMultSelect: action.payload.isMultSelect,
+        multSelectedStatements: !action.payload.isMultSelect ? [] : state.multSelectedStatements,
+      };
+
+    case ReduxActions.SET_STATEMENT_MULT_SELECTE_ITEM: {
+      const payloadItem = action.payload.multSelectedStatementItem;
+      const item = state?.multSelectedStatements?.find(item => item.id === payloadItem?.id);
+
+      let _multSelectedStatements = [...state?.multSelectedStatements];
+
+      if (item?.id) {
+        _multSelectedStatements = _multSelectedStatements.filter(item => item.id !== payloadItem?.id);
+      } else {
+        _multSelectedStatements.push(payloadItem);
+      }
+
+      return { ...state, multSelectedStatements: _multSelectedStatements };
+    }
 
     default:
       return state;

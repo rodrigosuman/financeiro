@@ -1,8 +1,10 @@
 import { APIBalance, APIStatementType } from '../../../types';
 
 export type StatementsState = {
-  data?: APIStatementType[];
+  data: APIStatementType[];
   balance: APIBalance;
   isLoading: boolean;
   isSending?: boolean;
+  isMultSelect?: boolean;
+  multSelectedStatements: APIStatementType[];
 };

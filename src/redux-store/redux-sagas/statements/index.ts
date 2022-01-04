@@ -7,10 +7,7 @@ import {
   patchStatements,
   postStatements
 } from '../../../services/api/actions';
-import {
-  APICreateStatementRequest,
-  APIPatchStatementRequest
-} from '../../../types';
+import { APICreateStatementRequest, APIPatchStatementRequest } from '../../../types';
 import { getAsyncDashboardAction } from '../../redux-actions/dashboard';
 import {
   getAsyncMounthStatementsAction,
@@ -18,9 +15,7 @@ import {
   setStatementsIsSendingAction
 } from '../../redux-actions/statements';
 
-export function* asyncGetStatementsByMounth(
-  args: any,
-): Generator<any, any, any> {
+export function* asyncGetStatementsByMounth(args: any): Generator<any, any, any> {
   try {
     const { year, mounth } = args.payload;
 
@@ -38,8 +33,6 @@ export function* asyncCreateStatements(args: {
 
     const MOUNTH = statement.statementDate.getMonth() + 1;
     const YEAR = statement.statementDate.getFullYear();
-
-    console.log('asyncCreateStatements', { statement });
 
     yield call(() =>
       postStatements({
@@ -70,8 +63,6 @@ export function* asyncPatchStatements(args: {
 
     const MOUNTH = statement.statementDate.getMonth() + 1;
     const YEAR = statement.statementDate.getFullYear();
-
-    console.log('asyncPatchStatements', { statement });
 
     yield call(() =>
       patchStatements(statement.id, {
@@ -107,21 +98,12 @@ export function* asyncDeleteStatements(args: any): Generator<any, any, any> {
 }
 
 function* sagas() {
-  yield takeLatest(
-    ReduxActions.ASYNC_GET_MOUNTH_STATEMENTS,
-    asyncGetStatementsByMounth,
-  );
-  yield takeLatest(ReduxActions.ASYNC_CREATE_STATEMENTS, (data: any) =>
-    asyncCreateStatements(data),
-  );
+  yield takeLatest(ReduxActions.ASYNC_GET_MOUNTH_STATEMENTS, asyncGetStatementsByMounth);
+  yield takeLatest(ReduxActions.ASYNC_CREATE_STATEMENTS, (data: any) => asyncCreateStatements(data));
 
-  yield takeLatest(ReduxActions.ASYNC_UPDATE_STATEMENTS, (data: any) =>
-    asyncPatchStatements(data),
-  );
+  yield takeLatest(ReduxActions.ASYNC_UPDATE_STATEMENTS, (data: any) => asyncPatchStatements(data));
 
-  yield takeLatest(ReduxActions.ASYNC_DELETE_STATEMENTS, (data: any) =>
-    asyncDeleteStatements(data),
-  );
+  yield takeLatest(ReduxActions.ASYNC_DELETE_STATEMENTS, (data: any) => asyncDeleteStatements(data));
 }
 
 export default sagas;

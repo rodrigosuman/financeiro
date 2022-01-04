@@ -16,11 +16,7 @@ export const theme: IThemeProvider = {
 };
 
 const ThemeProvider: React.FC = props => {
-  return (
-    <StyledComponentThemeProvider theme={theme}>
-      {props.children}
-    </StyledComponentThemeProvider>
-  );
+  return <StyledComponentThemeProvider theme={theme}>{props.children}</StyledComponentThemeProvider>;
 };
 
 export default ThemeProvider;

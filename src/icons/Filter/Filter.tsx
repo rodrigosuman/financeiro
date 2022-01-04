@@ -9,7 +9,7 @@ interface Props {
 const Filter: React.FC<Props> = ({ size = 18 }) => {
   const theme = useTheme();
 
-  return <Icon name="md-filter" color={theme.colors.white} size={size} />;
+  return <Icon name="md-filter" color={theme.colors.secondary} size={size} />;
 };
 
 export default Filter;

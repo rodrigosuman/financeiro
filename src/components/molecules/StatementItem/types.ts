@@ -14,4 +14,5 @@ export interface StatementItem {
 export interface StatemetItemProps {
   onPress?: (statementItem: any) => void;
   itemProps: StatementItem;
+  multSelect?: boolean;
 }

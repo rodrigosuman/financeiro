@@ -4,20 +4,15 @@ import {
   APIBalance,
   APICreateStatementRequest,
   APIFindByMounthResponse,
-  APIPatchStatementRequest
+  APIPatchStatementRequest,
+  APIStatementType
 } from '../../../types';
 
-export const getAsyncMounthStatementsAction = (
-  year: number,
-  mounth: number,
-) => {
+export const getAsyncMounthStatementsAction = (year: number, mounth: number) => {
   return action(ReduxActions.ASYNC_GET_MOUNTH_STATEMENTS, { year, mounth });
 };
 
-export const setMounthStatementsAction = ({
-  balance,
-  results,
-}: APIFindByMounthResponse) => {
+export const setMounthStatementsAction = ({ balance, results }: APIFindByMounthResponse) => {
   return action(ReduxActions.SET_MOUNTH_STATEMENTS, { balance, data: results });
 };
 
@@ -29,22 +24,15 @@ export const setMounthStatementsIsLoadingAction = (isLoading: boolean) => {
   return action(ReduxActions.SET_MOUNTH_STATEMENTS_IS_LOADING, { isLoading });
 };
 
-export const asyncPostStatementAction = (
-  statement: APICreateStatementRequest,
-) => {
+export const asyncPostStatementAction = (statement: APICreateStatementRequest) => {
   return action(ReduxActions.ASYNC_CREATE_STATEMENTS, { statement });
 };
 
-export const asyncPatchStatementAction = (
-  statement: Partial<APIPatchStatementRequest>,
-) => {
+export const asyncPatchStatementAction = (statement: Partial<APIPatchStatementRequest>) => {
   return action(ReduxActions.ASYNC_UPDATE_STATEMENTS, { statement });
 };
 
-export const asyncDeleteStatementAction = (
-  statementId: string,
-  statementDate: Date,
-) => {
+export const asyncDeleteStatementAction = (statementId: string, statementDate: Date) => {
   return action(ReduxActions.ASYNC_DELETE_STATEMENTS, {
     statementId,
     statementDate,
@@ -53,4 +41,12 @@ export const asyncDeleteStatementAction = (
 
 export const setStatementsIsSendingAction = (isSending?: boolean) => {
   return action(ReduxActions.SET_STATEMENTS_IS_SENDING, { isSending });
+};
+
+export const setStatementsIsMultSelectAction = (isMultSelect?: boolean) => {
+  return action(ReduxActions.SET_STATEMENT_IS_MULT_SELECT, { isMultSelect });
+};
+
+export const setStatementsMultSelectedItemAction = (multSelectedStatementItem?: APIStatementType) => {
+  return action(ReduxActions.SET_STATEMENT_MULT_SELECTE_ITEM, { multSelectedStatementItem });
 };

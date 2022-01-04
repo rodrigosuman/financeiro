@@ -1,6 +1,6 @@
 import { lastDayOfMonth } from 'date-fns';
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import Button from '../../components/atoms/Button';
 import Card from '../../components/molecules/Card';
@@ -8,6 +8,7 @@ import Flutuation from '../../components/molecules/Flutuation';
 import MounthPagination from '../../components/molecules/MounthPagination/MounthPagination';
 import MounthResume from '../../components/molecules/MounthResume';
 import { MounthResumeProps } from '../../components/molecules/MounthResume/types';
+import ShareIcon from '../../components/molecules/ShareIcon';
 import { StatementItem } from '../../components/molecules/StatementItem/types';
 import StatementsList from '../../components/molecules/StatementsList';
 import Routes from '../../constants/routesPath';
@@ -18,7 +19,9 @@ import icons from '../../icons';
 import {
   getAsyncMounthStatementsAction,
   setMounthStatementsIsLoadingAction,
-  setStatementsIsSendingAction
+  setStatementsIsMultSelectAction,
+  setStatementsIsSendingAction,
+  setStatementsMultSelectedItemAction
 } from '../../redux-store/redux-actions/statements';
 import { getAsyncStatementTypesAction } from '../../redux-store/redux-actions/statementTypes';
 import { sumDebts } from '../../redux-store/redux-reducers/statements';
@@ -30,7 +33,7 @@ const MounthlyStatements: React.FC = () => {
   const currencyFormater = useCurrencyFormater('BRL');
   const dispatch = useDispatch();
 
-  const { balance, data, isLoading } = useSelector(state => state.statements);
+  const { balance, data, isLoading, isMultSelect } = useSelector(state => state.statements);
 
   const BALANCE = balance?.total || 0;
   const ESTIMATE = balance?.estimate || 0;
@@ -93,10 +96,41 @@ const MounthlyStatements: React.FC = () => {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity>{icons.FILTER({ size: 24 })}</TouchableOpacity>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginRight: -12,
+          }}>
+          {isMultSelect ? (
+            <ShareIcon />
+          ) : (
+            <TouchableOpacity
+              onPress={() => dispatch(setStatementsIsMultSelectAction(true))}
+              style={{
+                width: 40,
+                height: 40,
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginRight: 8,
+              }}>
+              {icons.MULT_CHECK({ size: 24 })}
+            </TouchableOpacity>
+          )}
+
+          <TouchableOpacity
+            style={{
+              width: 40,
+              height: 40,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            {icons.FILTER({ size: 24 })}
+          </TouchableOpacity>
+        </View>
       ),
     });
-  }, [navigation]);
+  }, [navigation, isMultSelect, dispatch]);
 
   React.useEffect(() => {
     const CURRENT_DATE = new Date();
@@ -116,9 +150,7 @@ const MounthlyStatements: React.FC = () => {
   const MOUNTH = maximumDate.getMonth() + 1;
 
   const minimumDate = React.useMemo(() => {
-    return new Date(
-      `${maximumDate.getFullYear()}-${mountMounth(MOUNTH)}-01T00:00`,
-    );
+    return new Date(`${maximumDate.getFullYear()}-${mountMounth(MOUNTH)}-01T00:00`);
   }, [MOUNTH, maximumDate]);
 
   const navigateToCreateEditForm = React.useCallback(
@@ -168,13 +200,7 @@ const MounthlyStatements: React.FC = () => {
             light
             headerProps={{
               title: 'Total a pagar',
-              right: () => (
-                <Flutuation
-                  isLoading={isLoading}
-                  flutuation={(DEBTS / BALANCE) * 100}
-                  showIcon={false}
-                />
-              ),
+              right: () => <Flutuation isLoading={isLoading} flutuation={(DEBTS / BALANCE) * 100} showIcon={false} />,
             }}>
             <S.CardText>{_debts}</S.CardText>
           </Card>
@@ -186,12 +212,7 @@ const MounthlyStatements: React.FC = () => {
             light
             headerProps={{
               title: 'Saldo estimado',
-              right: () => (
-                <Flutuation
-                  isLoading={isLoading}
-                  flutuation={balanceFlutuation}
-                />
-              ),
+              right: () => <Flutuation isLoading={isLoading} flutuation={balanceFlutuation} />,
             }}>
             <S.CardText>{_estimate}</S.CardText>
           </Card>
@@ -199,6 +220,7 @@ const MounthlyStatements: React.FC = () => {
 
         <S.ContainerSection>
           <StatementsList
+            multSelect={isMultSelect}
             isLoading={isLoading}
             statements={statements}
             onItemPress={statement => {
@@ -206,6 +228,11 @@ const MounthlyStatements: React.FC = () => {
                 const _statement = data?.find(item => item.id === statement.id);
                 navigateToCreateEditForm(_statement);
               } catch (error) {}
+            }}
+            onCheckPress={(value, item) => {
+              const statementItem = data?.find?.(statement => statement.id === item?.id);
+
+              dispatch(setStatementsMultSelectedItemAction(statementItem));
             }}
           />
         </S.ContainerSection>

@@ -12,18 +12,10 @@ const StatementItem: React.FC<StatemetItemProps> = props => {
   const statamenteDate = format(itemProps.statamenteDate, 'dd/MM/yyyy');
 
   return (
-    <S.Container
-      activeOpacity={0.7}
-      disabled={!onPress}
-      onPress={onPress}
-      status={itemProps.status}>
+    <S.Container activeOpacity={0.7} disabled={!onPress} onPress={onPress} status={itemProps.status}>
       <S.ItemHeader>
         <S.TitleWrapper>
-          {icons[itemProps.type] ? (
-            <S.IconWrapper>{icons[itemProps.type]()}</S.IconWrapper>
-          ) : (
-            <></>
-          )}
+          {icons[itemProps.type] ? <S.IconWrapper>{icons[itemProps.type]()}</S.IconWrapper> : <></>}
           <S.ItemTitle>{itemProps.title}</S.ItemTitle>
         </S.TitleWrapper>
         <S.ItemTitle>{value}</S.ItemTitle>

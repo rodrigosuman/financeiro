@@ -6,7 +6,9 @@ import { ItemStatus } from './types';
 export const Container = styled.TouchableOpacity<{ status: ItemStatus }>`
   ${({ status }) => css`
     opacity: ${status === 'NOT_PAID' ? 1 : 0.38};
-    margin-bottom: 10px;
+    margin-bottom: 24px;
+    flex: 1;
+    height: 40px;
   `}
 `;
 

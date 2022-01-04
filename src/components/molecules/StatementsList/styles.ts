@@ -21,3 +21,7 @@ export const EmptyText = styled(DefaultText)`
     margin-top: 16px;
   `}
 `;
+
+export const ItemContainer = styled.View`
+  flex-direction: row;
+`;

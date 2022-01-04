@@ -5,10 +5,14 @@ import ArrowLeft from './ArrowLeft';
 import ArrowRight from './ArrowRight';
 import ArrowUp from './ArrowUp';
 import Calendar from './Calendar';
+import Check from './Check';
 import ChevronDown from './ChevronDown';
 import Close from './Close';
+import Copy from './Copy';
 import Filter from './Filter';
 import Minus from './Minus';
+import MultChecks from './MultChecks';
+import Share from './Share';
 import Trash from './Trash';
 
 interface Props {
@@ -27,6 +31,10 @@ const icons = {
   CLOSE: (props?: Props) => <Close {...props} />,
   TRASH: (props?: Props) => <Trash {...props} />,
   MINUS: (props?: Props) => <Minus {...props} />,
+  COPY: (props?: Props) => <Copy {...props} />,
+  CHECK: (props?: Props) => <Check {...props} />,
+  MULT_CHECK: (props?: Props) => <MultChecks {...props} />,
+  SHARE: (props?: Props) => <Share {...props} />,
 };
 
 export default icons;
