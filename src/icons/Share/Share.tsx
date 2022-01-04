@@ -11,7 +11,7 @@ interface Props {
 const Share: React.FC<Props> = ({ size = 18, color }) => {
   const theme = useTheme();
 
-  return <Icon name="share-outline" color={color ? theme.colors[color] : theme.colors.secondary} size={size} />;
+  return <Icon name="create-outline" color={color ? theme.colors[color] : theme.colors.secondary} size={size} />;
 };
 
 export default Share;

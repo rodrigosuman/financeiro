@@ -12,6 +12,7 @@ const INITIAL_STATE: StatementsState = {
   },
   isLoading: false,
   isSending: undefined,
+  isSendingMultSelect: undefined,
   multSelectedStatements: [],
   isMultSelect: false,
 };
@@ -71,7 +72,11 @@ const reducer: Reducer<StatementsState, any> = (state = INITIAL_STATE, action) =
     }
 
     case ReduxActions.CLEAR_STATEMENT_MULT_SELECTE_ITEM: {
-      return { ...state, multSelectedStatements: [], isMultSelect: false, isSending: false };
+      return { ...state, multSelectedStatements: [], isMultSelect: false, isSendingMultSelect: undefined };
+    }
+
+    case ReduxActions.SET_COPY_STATEMENTS_IS_SENDING: {
+      return { ...state, isSendingMultSelect: action.payload.isSendingMultSelect };
     }
 
     default:

@@ -3,7 +3,7 @@ import { TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 import useSelector from '../../../hooks/useSelector';
 import icons from '../../../icons';
-import { setStatementsIsMultSelectAction } from '../../../redux-store/redux-actions/statements';
+import { clearStatementsMultSelectedItemAction } from '../../../redux-store/redux-actions/statements';
 import CopySelectedStatements from '../../../screens/CopySelectedStatements/CopySelectedStatements';
 import * as DropDownStyles from '../../atoms/Dropdown/styles';
 import Modal from '../Modal/Modal';
@@ -14,7 +14,7 @@ const ShareIcon: React.FC = () => {
   const dispatch = useDispatch();
 
   const multSelectedStatements = useSelector(state => state.statements.multSelectedStatements);
-  const isSending = useSelector(state => state.statements.isSending);
+  const isSendingMultSelect = useSelector(state => state.statements.isSendingMultSelect);
   const modalRef = React.useRef<ModalRefProps>({
     toggleVisible: () => {},
   });
@@ -23,25 +23,25 @@ const ShareIcon: React.FC = () => {
     toggleVisible: () => {},
   });
 
-  const onCancel = React.useCallback(() => {
-    dispatch(setStatementsIsMultSelectAction(false));
-    modalRef.current.toggleVisible();
-    modalCopyFormRef.current.toggleVisible();
-  }, [dispatch]);
-
   const totalSelected = multSelectedStatements?.length;
   const showTotalSelectedItems = Boolean(totalSelected);
 
+  const onCancel = React.useCallback(() => {
+    modalRef.current.toggleVisible();
+    modalCopyFormRef.current.toggleVisible();
+    dispatch(clearStatementsMultSelectedItemAction());
+  }, [dispatch]);
+
   React.useEffect(() => {
-    if (isSending === false) {
+    if (isSendingMultSelect === false) {
       onCancel();
     }
-  }, [isSending, onCancel]);
+  }, [isSendingMultSelect, onCancel]);
 
   return (
     <React.Fragment>
       <S.Container onPress={() => modalRef.current.toggleVisible()}>
-        {icons.SHARE({ size: 23 })}
+        {icons.SHARE({ size: 24 })}
         {showTotalSelectedItems && (
           <S.Dot>
             <S.DotText>{totalSelected}</S.DotText>

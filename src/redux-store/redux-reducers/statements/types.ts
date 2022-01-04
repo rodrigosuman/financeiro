@@ -5,6 +5,7 @@ export type StatementsState = {
   balance: APIBalance;
   isLoading: boolean;
   isSending?: boolean;
+  isSendingMultSelect?: boolean;
   isMultSelect?: boolean;
   multSelectedStatements: APIStatementType[];
 };

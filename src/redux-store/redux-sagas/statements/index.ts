@@ -13,6 +13,7 @@ import { APICopyStatements, APICreateStatementRequest, APIPatchStatementRequest 
 import {
   clearStatementsMultSelectedItemAction,
   getAsyncMounthStatementsAction,
+  setCopyStatementsIsSendingAction,
   setMounthStatementsAction,
   setStatementsIsSendingAction
 } from '../../redux-actions/statements';
@@ -115,6 +116,7 @@ export function* asyncCopyStatements(args: { payload: APICopyStatements }): Gene
 
     yield put(getAsyncMounthStatementsAction(YEAR, MOUNTH));
     yield put(setStatementsIsSendingAction(false));
+    yield put(setCopyStatementsIsSendingAction(false));
     yield put(clearStatementsMultSelectedItemAction());
   } catch (error) {
     console.log({ error });

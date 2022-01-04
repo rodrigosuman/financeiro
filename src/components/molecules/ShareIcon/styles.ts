@@ -14,7 +14,7 @@ export const Dot = styled.View`
     width: 18px;
     height: 18px;
     border-radius: 18px;
-    background-color: ${theme.colors.secondary};
+    background-color: ${theme.colors.white}30;
     position: absolute;
     top: 0px;
     right: 0px;
@@ -24,7 +24,7 @@ export const Dot = styled.View`
 export const DotText = styled(StrongText)`
   ${({ theme }) => css`
     font-size: 12px;
-    color: ${theme.colors.primary};
+    color: ${theme.colors.white};
     align-self: center;
   `}
 `;

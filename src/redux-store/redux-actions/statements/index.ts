@@ -59,3 +59,7 @@ export const clearStatementsMultSelectedItemAction = () => {
 export const asyncCopyStatementsAction = (data: APICopyStatements) => {
   return action(ReduxActions.ASYNC_COPY_STATEMENTS, data);
 };
+
+export const setCopyStatementsIsSendingAction = (isSendingMultSelect?: boolean) => {
+  return action(ReduxActions.SET_COPY_STATEMENTS_IS_SENDING, { isSendingMultSelect });
+};

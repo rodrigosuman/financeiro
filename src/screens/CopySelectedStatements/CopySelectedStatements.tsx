@@ -7,7 +7,10 @@ import Button from '../../components/atoms/Button';
 import Dropdown from '../../components/atoms/Dropdown';
 import useNavigation from '../../hooks/useNavigation';
 import useSelector from '../../hooks/useSelector';
-import { asyncCopyStatementsAction, setStatementsIsSendingAction } from '../../redux-store/redux-actions/statements';
+import {
+  asyncCopyStatementsAction,
+  setCopyStatementsIsSendingAction
+} from '../../redux-store/redux-actions/statements';
 import * as S from './styles';
 import { CopyStatementsFormData } from './types';
 
@@ -16,13 +19,13 @@ const CopySelectedStatements: React.FC<{ onSuccess: () => void }> = ({ onSuccess
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const isSending = useSelector(state => state.statements.isSending);
+  const isSendingMultSelect = useSelector(state => state.statements.isSendingMultSelect);
 
   const multSelectedStatements = useSelector(state => state.statements.multSelectedStatements);
 
   const onSubmit = React.useCallback(
     (data: CopyStatementsFormData) => {
-      dispatch(setStatementsIsSendingAction(true));
+      dispatch(setCopyStatementsIsSendingAction(true));
       dispatch(
         asyncCopyStatementsAction({
           statements: multSelectedStatements.map(item => ({
@@ -36,12 +39,6 @@ const CopySelectedStatements: React.FC<{ onSuccess: () => void }> = ({ onSuccess
     },
     [dispatch, multSelectedStatements],
   );
-
-  React.useEffect(() => {
-    if (isSending === false) {
-      navigation.goBack();
-    }
-  }, [dispatch, isSending, navigation, onSuccess]);
 
   return (
     <View style={{ height: 480 }}>
@@ -94,7 +91,12 @@ const CopySelectedStatements: React.FC<{ onSuccess: () => void }> = ({ onSuccess
         </Form>
       </S.FormContainer>
 
-      <Button title="Copiar" variant="primary" onPress={() => formRef.current?.submitForm?.()} isSending={isSending} />
+      <Button
+        title="Copiar"
+        variant="primary"
+        onPress={() => formRef.current?.submitForm?.()}
+        isSending={isSendingMultSelect}
+      />
     </View>
   );
 };
