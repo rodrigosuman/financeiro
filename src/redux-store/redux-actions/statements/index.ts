@@ -2,6 +2,7 @@ import { action } from 'typesafe-actions';
 import ReduxActions from '../../../constants/reduxActions';
 import {
   APIBalance,
+  APICopyStatements,
   APICreateStatementRequest,
   APIFindByMounthResponse,
   APIPatchStatementRequest,
@@ -49,4 +50,12 @@ export const setStatementsIsMultSelectAction = (isMultSelect?: boolean) => {
 
 export const setStatementsMultSelectedItemAction = (multSelectedStatementItem?: APIStatementType) => {
   return action(ReduxActions.SET_STATEMENT_MULT_SELECTE_ITEM, { multSelectedStatementItem });
+};
+
+export const clearStatementsMultSelectedItemAction = () => {
+  return action(ReduxActions.CLEAR_STATEMENT_MULT_SELECTE_ITEM);
+};
+
+export const asyncCopyStatementsAction = (data: APICopyStatements) => {
+  return action(ReduxActions.ASYNC_COPY_STATEMENTS, data);
 };

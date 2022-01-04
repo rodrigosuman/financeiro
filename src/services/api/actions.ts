@@ -1,6 +1,7 @@
 import api from '.';
 import ApiRoutes from '../../constants/apiRoutes';
 import {
+  APICopyStatements,
   APICreateStatementResponse,
   APIDashboardReponse,
   APIFindByMounthResponse,
@@ -26,22 +27,18 @@ export const postStatements = (body: APIPostOrPatchStatements) => {
   return api.post<APICreateStatementResponse>(ApiRoutes.STATEMENTS, body);
 };
 
-export const patchStatements = (
-  statementId: string,
-  body: Partial<APIPostOrPatchStatements>,
-) => {
-  return api.patch<APIUpdateStatementResponse>(
-    ApiRoutes.STATEMENTS + '/' + statementId,
-    body,
-  );
+export const patchStatements = (statementId: string, body: Partial<APIPostOrPatchStatements>) => {
+  return api.patch<APIUpdateStatementResponse>(ApiRoutes.STATEMENTS + '/' + statementId, body);
 };
 
 export const deleteStatements = (statementId: string) => {
-  return api.delete<APIUpdateStatementResponse>(
-    ApiRoutes.STATEMENTS + '/' + statementId,
-  );
+  return api.delete<APIUpdateStatementResponse>(ApiRoutes.STATEMENTS + '/' + statementId);
 };
 
 export const getStatementTypes = () => {
   return api.get<APIStatementTypes[]>(ApiRoutes.STATEMENT_TYPES);
+};
+
+export const postCopyStatements = (body: APICopyStatements) => {
+  return api.post<APIUpdateStatementResponse>(ApiRoutes.COPY_STATEMENTS, body);
 };

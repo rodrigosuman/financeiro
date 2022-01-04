@@ -232,7 +232,7 @@ const MounthlyStatements: React.FC = () => {
             onCheckPress={(value, item) => {
               const statementItem = data?.find?.(statement => statement.id === item?.id);
 
-              dispatch(setStatementsMultSelectedItemAction(statementItem));
+              statementItem && dispatch(setStatementsMultSelectedItemAction(statementItem));
             }}
           />
         </S.ContainerSection>

@@ -3,6 +3,7 @@ import React from 'react';
 import { useTheme } from 'styled-components';
 import FontName from '../../constants/fontNames';
 import Routes from '../../constants/routesPath';
+import CopySelectedStatements from '../../screens/CopySelectedStatements/CopySelectedStatements';
 import MounthlyStatements from '../../screens/MounthlyStatements/MounthlyStatements';
 import StatementCreateEditForm from '../../screens/StatmentCreateEditForm/StatementCreateEditForm';
 
@@ -10,6 +11,7 @@ export type RootStackParamList = {
   [Routes.DASHBOARD]: undefined;
   [Routes.STATEMENTS]: undefined;
   [Routes.CREATE_EDIT_STATEMENTS]: undefined;
+  [Routes.COPY_STATEMENTS]: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -65,6 +67,29 @@ const AppStack: React.FC = () => {
         }}
         name={Routes.CREATE_EDIT_STATEMENTS}
         component={StatementCreateEditForm}
+      />
+
+      <Stack.Screen
+        options={{
+          title: 'Copiar lançamentos',
+          contentStyle: {
+            backgroundColor: theme.colors.bgDark,
+          },
+          headerTitleStyle: {
+            fontFamily: FontName.REGULAR,
+            color: theme.colors.white,
+            fontSize: 20,
+          },
+          headerStyle: {
+            backgroundColor: theme.colors.bgDark,
+          },
+          headerBackVisible: false,
+          headerShadowVisible: false,
+          headerTintColor: theme.colors.white,
+          animation: 'fade_from_bottom',
+        }}
+        name={Routes.COPY_STATEMENTS}
+        component={CopySelectedStatements}
       />
     </Stack.Navigator>
   );

@@ -70,6 +70,10 @@ const reducer: Reducer<StatementsState, any> = (state = INITIAL_STATE, action) =
       return { ...state, multSelectedStatements: _multSelectedStatements };
     }
 
+    case ReduxActions.CLEAR_STATEMENT_MULT_SELECTE_ITEM: {
+      return { ...state, multSelectedStatements: [], isMultSelect: false, isSending: false };
+    }
+
     default:
       return state;
   }

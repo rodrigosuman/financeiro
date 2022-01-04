@@ -1,8 +1,4 @@
-type Frequency =
-  | 'REPEAT_EVERY_15_DAYS'
-  | 'REPEAT_MONTHLY'
-  | 'REPEAT_QUARTERLY'
-  | 'REPEAT_ANNUALLY';
+type Frequency = 'REPEAT_EVERY_15_DAYS' | 'REPEAT_MONTHLY' | 'REPEAT_QUARTERLY' | 'REPEAT_ANNUALLY';
 
 export type APIStatementType = {
   id: string;
@@ -92,4 +88,9 @@ export type APIPatchStatementRequest = {
   comments?: string[];
   id: string;
   status?: 'NOT_PAID' | 'PAID';
+};
+
+export type APICopyStatements = {
+  statements: APICreateStatementRequest[];
+  year: number;
 };
