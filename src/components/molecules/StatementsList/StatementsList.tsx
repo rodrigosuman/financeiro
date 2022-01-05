@@ -62,8 +62,7 @@ const Item: React.FC<ItemProps> = props => {
               onLongPress?.();
             }
           : undefined
-      }
-      delayLongPress={0.4}>
+      }>
       <S.ItemContainer>
         {multSelect && (
           <View style={{ marginRight: 8 }}>
