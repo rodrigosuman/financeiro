@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, TouchableOpacity, View } from 'react-native';
+import { FlatList, TouchableOpacity, Vibration, View } from 'react-native';
 import useSelector from '../../../hooks/useSelector';
 import Checkbox from '../../atoms/Checkbox';
 import { CheckboxRef } from '../../atoms/Checkbox/types';
@@ -14,12 +14,13 @@ interface ItemProps {
   multSelect?: boolean;
   onCheckPress?: (checked: boolean, statement: StatementItem) => void;
   item: StatementItem;
+  onLongPress?: () => void;
 }
 
 const Item: React.FC<ItemProps> = props => {
   const multSelectedStatements = useSelector(state => state.statements.multSelectedStatements);
 
-  const { onItemPress, multSelect, item, onCheckPress } = props;
+  const { onItemPress, item, onCheckPress, onLongPress, multSelect } = props;
 
   const checkboxRef = React.useRef<CheckboxRef>({ toggleChecked: () => {} });
 
@@ -51,7 +52,18 @@ const Item: React.FC<ItemProps> = props => {
   );
 
   return (
-    <TouchableOpacity activeOpacity={0.7} onPress={handleContainerPress(item)}>
+    <TouchableOpacity
+      activeOpacity={0.7}
+      onPress={handleContainerPress(item)}
+      onLongPress={
+        !multSelect
+          ? () => {
+              Vibration.vibrate(100);
+              onLongPress?.();
+            }
+          : undefined
+      }
+      delayLongPress={0.4}>
       <S.ItemContainer>
         {multSelect && (
           <View style={{ marginRight: 8 }}>
@@ -68,7 +80,7 @@ const Item: React.FC<ItemProps> = props => {
 };
 
 const StatementsList: React.FC<StatementsListProps> = props => {
-  const { title, statements, isLoading, onItemPress, multSelect = false, onCheckPress } = props;
+  const { title, statements, isLoading, onItemPress, onCheckPress, multSelect, onToggleMultSelect } = props;
 
   const _onCheckPress = React.useCallback(
     (value: boolean, item: StatementItem) => {
@@ -87,7 +99,19 @@ const StatementsList: React.FC<StatementsListProps> = props => {
         <FlatList
           data={statements}
           renderItem={({ item }) => (
-            <Item item={item} multSelect={multSelect} onCheckPress={_onCheckPress} onItemPress={onItemPress} />
+            <Item
+              item={item}
+              multSelect={multSelect}
+              onCheckPress={_onCheckPress}
+              onItemPress={onItemPress}
+              onLongPress={
+                !multSelect
+                  ? () => {
+                      onToggleMultSelect(true);
+                    }
+                  : undefined
+              }
+            />
           )}
           keyExtractor={() => Math.random().toString()}
           ListEmptyComponent={() => <S.EmptyText>Nenhum lançamento no período</S.EmptyText>}

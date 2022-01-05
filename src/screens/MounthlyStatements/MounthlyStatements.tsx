@@ -1,6 +1,6 @@
 import { lastDayOfMonth } from 'date-fns';
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import Button from '../../components/atoms/Button';
 import Card from '../../components/molecules/Card';
@@ -15,7 +15,6 @@ import Routes from '../../constants/routesPath';
 import useCurrencyFormater from '../../hooks/useCurrencyFormater';
 import useNavigation from '../../hooks/useNavigation';
 import useSelector from '../../hooks/useSelector';
-import icons from '../../icons';
 import {
   getAsyncMounthStatementsAction,
   setMounthStatementsIsLoadingAction,
@@ -102,23 +101,9 @@ const MounthlyStatements: React.FC = () => {
             alignItems: 'center',
             marginRight: -12,
           }}>
-          {isMultSelect ? (
-            <ShareIcon />
-          ) : (
-            <TouchableOpacity
-              onPress={() => dispatch(setStatementsIsMultSelectAction(true))}
-              style={{
-                width: 40,
-                height: 40,
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginRight: 8,
-              }}>
-              {icons.MULT_CHECK({ size: 24 })}
-            </TouchableOpacity>
-          )}
+          {isMultSelect && <ShareIcon />}
 
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={{
               width: 40,
               height: 40,
@@ -126,7 +111,7 @@ const MounthlyStatements: React.FC = () => {
               alignItems: 'center',
             }}>
             {icons.FILTER({ size: 24 })}
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       ),
     });
@@ -223,6 +208,7 @@ const MounthlyStatements: React.FC = () => {
             multSelect={isMultSelect}
             isLoading={isLoading}
             statements={statements}
+            onToggleMultSelect={() => dispatch(setStatementsIsMultSelectAction(true))}
             onItemPress={statement => {
               try {
                 const _statement = data?.find(item => item.id === statement.id);

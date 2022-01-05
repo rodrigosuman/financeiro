@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import { BackHandler, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 import useSelector from '../../../hooks/useSelector';
 import icons from '../../../icons';
@@ -37,6 +37,17 @@ const ShareIcon: React.FC = () => {
       onCancel();
     }
   }, [isSendingMultSelect, onCancel]);
+
+  React.useEffect(() => {
+    const backhandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      onCancel();
+
+      return true;
+    });
+    return () => {
+      backhandler.remove();
+    };
+  }, [onCancel, showTotalSelectedItems]);
 
   return (
     <React.Fragment>

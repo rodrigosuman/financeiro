@@ -7,4 +7,5 @@ export interface StatementsListProps {
   onItemPress?: (statement: StatementItem) => void;
   multSelect?: boolean;
   onCheckPress?: (checked: boolean, statement: StatementItem) => void;
+  onToggleMultSelect: (multSelect: boolean) => void;
 }
