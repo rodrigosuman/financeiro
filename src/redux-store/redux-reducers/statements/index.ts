@@ -29,6 +29,16 @@ export const sumDebts = (data?: APIStatementType[]) => {
   return debts;
 };
 
+export const sumSelectedItems = (data?: APIStatementType[]) => {
+  let debts = 0;
+
+  data?.forEach(statement => {
+    debts += statement.value * (statement.statementType.type === 'DEBT' ? -1 : 1);
+  });
+
+  return debts;
+};
+
 const reducer: Reducer<StatementsState, any> = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case ReduxActions.SET_MOUNTH_STATEMENTS:

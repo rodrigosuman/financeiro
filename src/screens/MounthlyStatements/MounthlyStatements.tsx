@@ -23,7 +23,7 @@ import {
   setStatementsMultSelectedItemAction
 } from '../../redux-store/redux-actions/statements';
 import { getAsyncStatementTypesAction } from '../../redux-store/redux-actions/statementTypes';
-import { sumDebts } from '../../redux-store/redux-reducers/statements';
+import { sumDebts, sumSelectedItems } from '../../redux-store/redux-reducers/statements';
 import { APIStatementType } from '../../types';
 import * as S from './styles';
 
@@ -32,7 +32,7 @@ const MounthlyStatements: React.FC = () => {
   const currencyFormater = useCurrencyFormater('BRL');
   const dispatch = useDispatch();
 
-  const { balance, data, isLoading, isMultSelect } = useSelector(state => state.statements);
+  const { balance, data, isLoading, isMultSelect, multSelectedStatements } = useSelector(state => state.statements);
 
   const BALANCE = balance?.total || 0;
   const ESTIMATE = balance?.estimate || 0;
@@ -40,10 +40,12 @@ const MounthlyStatements: React.FC = () => {
   const STATEMENTS = data || [];
   const CURRENT_DATE = new Date();
   const DEBTS = sumDebts(data);
+  const SELECTED_ITEMS_SUM = sumSelectedItems(multSelectedStatements);
 
   const _debts = currencyFormater.format(DEBTS);
   const _balance = currencyFormater.format(BALANCE);
   const _estimate = currencyFormater.format(ESTIMATE);
+  const _selectedItemsSum = currencyFormater.format(SELECTED_ITEMS_SUM);
   const balanceFlutuation = FLUTUATION;
   const _year = React.useRef<number>(CURRENT_DATE.getFullYear());
   const _mounth = React.useRef<number>(CURRENT_DATE.getMonth() + 1);
@@ -94,6 +96,7 @@ const MounthlyStatements: React.FC = () => {
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
+      title: isMultSelect ? (SELECTED_ITEMS_SUM ? _selectedItemsSum : '') : 'Lançamentos',
       headerRight: () => (
         <View
           style={{
@@ -115,7 +118,7 @@ const MounthlyStatements: React.FC = () => {
         </View>
       ),
     });
-  }, [navigation, isMultSelect, dispatch]);
+  }, [navigation, isMultSelect, dispatch, multSelectedStatements, SELECTED_ITEMS_SUM, _selectedItemsSum]);
 
   React.useEffect(() => {
     const CURRENT_DATE = new Date();

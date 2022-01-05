@@ -41,7 +41,7 @@ const CopySelectedStatements: React.FC<{ onSuccess: () => void }> = ({ onSuccess
   );
 
   return (
-    <View style={{ height: 480 }}>
+    <View style={{ height: 350 }}>
       <S.FormContainer>
         <Form onSubmit={onSubmit} ref={formRef}>
           <S.FormInputsContainer>

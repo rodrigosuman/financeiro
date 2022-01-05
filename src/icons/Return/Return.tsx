@@ -7,10 +7,10 @@ interface Props {
   color?: string;
 }
 
-const Copy: React.FC<Props> = ({ size = 18, color }) => {
+const Return: React.FC<Props> = ({ size = 18, color }) => {
   const theme = useTheme();
 
-  return <Icon name="ios-copy-outline" color={color || theme.colors.secondary} size={size} />;
+  return <Icon name="return-up-back" color={color || theme.colors.secondary} size={size} />;
 };
 
-export default Copy;
+export default Return;

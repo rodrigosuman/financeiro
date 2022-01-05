@@ -12,6 +12,7 @@ import Copy from './Copy';
 import Filter from './Filter';
 import Minus from './Minus';
 import MultChecks from './MultChecks';
+import Return from './Return';
 import Share from './Share';
 import Trash from './Trash';
 
@@ -35,6 +36,7 @@ const icons = {
   CHECK: (props?: Props) => <Check {...props} />,
   MULT_CHECK: (props?: Props) => <MultChecks {...props} />,
   SHARE: (props?: Props) => <Share {...props} />,
+  RETURN: (props?: Props) => <Return {...props} />,
 };
 
 export default icons;

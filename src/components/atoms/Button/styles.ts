@@ -21,6 +21,6 @@ export const ButtonContainer = styled.TouchableOpacity<ButtonContainerProps>`
 export const ButtonTitle = styled(StrongText)<{ isSending?: boolean; size?: ButtonSize }>`
   ${({ theme, size }) => css`
     color: ${theme.colors.white};
-    font-size: ${size === 'SMALL' ? 16 : 16};
+    font-size: ${size === 'SMALL' ? 14 : 16}px;
   `}
 `;

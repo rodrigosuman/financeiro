@@ -108,6 +108,7 @@ const StatementsList: React.FC<StatementsListProps> = props => {
                 !multSelect
                   ? () => {
                       onToggleMultSelect(true);
+                      _onCheckPress(true, item);
                     }
                   : undefined
               }
