@@ -331,9 +331,19 @@ const StatmentCreateEditForm: React.ForwardRefRenderFunction<
 
             <FormValueAndDate params={params} />
 
-            <S.FormItem>
-              <TextArea placeholder="Descrição" name="comments[0]" />
-            </S.FormItem>
+            {params?.statement?.comments?.length ? (
+              <>
+                {params?.statement?.comments?.map((comment, index) => (
+                  <S.FormItem>
+                    <TextArea placeholder="Descrição" name={`comments[${index}]`} />
+                  </S.FormItem>
+                ))}
+              </>
+            ) : (
+              <S.FormItem>
+                <TextArea placeholder="Descrição" name="comments[0]" />
+              </S.FormItem>
+            )}
 
             {frequency === 'CUSTOM' && (
               <S.CustomValuesWrapper>

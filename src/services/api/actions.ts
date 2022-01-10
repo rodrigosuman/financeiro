@@ -7,6 +7,7 @@ import {
   APIFindByMounthResponse,
   APIPostOrPatchStatements,
   APIStatementTypes,
+  APIUpdateCreditCards,
   APIUpdateStatementResponse
 } from '../../types';
 
@@ -41,4 +42,8 @@ export const getStatementTypes = () => {
 
 export const postCopyStatements = (body: APICopyStatements) => {
   return api.post<APIUpdateStatementResponse>(ApiRoutes.COPY_STATEMENTS, body);
+};
+
+export const postUpdateCreditCards = (body: APIUpdateCreditCards) => {
+  return api.post<APIUpdateStatementResponse>(ApiRoutes.UPDATE_CREDIT_CARDS, body);
 };
