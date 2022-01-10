@@ -55,6 +55,7 @@ const Item: React.FC<ItemProps> = props => {
     <TouchableOpacity
       activeOpacity={0.7}
       onPress={handleContainerPress(item)}
+      delayLongPress={280}
       onLongPress={
         !multSelect
           ? () => {

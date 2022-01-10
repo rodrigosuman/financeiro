@@ -11,9 +11,7 @@ import DatePicker from '../../components/atoms/DatePicker';
 import Dropdown from '../../components/atoms/Dropdown';
 import Loading from '../../components/atoms/Loading/Loading';
 import TextArea from '../../components/atoms/TextArea';
-import statementFrequency, {
-  FrequencyType
-} from '../../constants/statementsFrequency';
+import statementFrequency, { FrequencyType } from '../../constants/statementsFrequency';
 import useNavigation from '../../hooks/useNavigation';
 import useSelector from '../../hooks/useSelector';
 import icons from '../../icons';
@@ -25,11 +23,7 @@ import {
 } from '../../redux-store/redux-actions/statements';
 import { APIStatementType } from '../../types';
 import * as S from './styles';
-import {
-  StatementCreateEditFormProps,
-  StatementCreateEditFormRef,
-  StatementFormData
-} from './types';
+import { StatementCreateEditFormProps, StatementCreateEditFormRef, StatementFormData } from './types';
 
 const FormValueAndDate = ({ params }: any) => {
   return (
@@ -105,23 +99,14 @@ const StatmentCreateEditForm: React.ForwardRefRenderFunction<
   const dispatch = useDispatch();
 
   const params =
-    useRoute<
-      RouteProp<
-        Record<
-          string,
-          { statement: APIStatementType; maximumDate: Date; minimumDate: Date }
-        >,
-        string
-      >
-    >().params;
+    useRoute<RouteProp<Record<string, { statement: APIStatementType; maximumDate: Date; minimumDate: Date }>, string>>()
+      .params;
 
   const statementTypes = useSelector(state => state.statementTypes);
   const isSending = useSelector(state => state.statements.isSending);
 
   const [frequency, setFrequency] = React.useState<FrequencyType>();
-  const [customValues, setCustomValues] = React.useState<
-    { value?: number; statementDate?: Date }[]
-  >([
+  const [customValues, setCustomValues] = React.useState<{ value?: number; statementDate?: Date }[]>([
     {
       statementDate: undefined,
       value: undefined,
@@ -141,12 +126,7 @@ const StatmentCreateEditForm: React.ForwardRefRenderFunction<
 
   const onDelete = React.useCallback(() => {
     dispatch(setStatementsIsSendingAction(true));
-    dispatch(
-      asyncDeleteStatementAction(
-        params?.statement?.id,
-        parseISO(params.statement?.statementDate + 'T23:59'),
-      ),
-    );
+    dispatch(asyncDeleteStatementAction(params?.statement?.id, parseISO(params.statement?.statementDate + 'T23:59')));
   }, [dispatch, params.statement?.id, params.statement?.statementDate]);
 
   const updateStatement = React.useCallback(
@@ -199,10 +179,7 @@ const StatmentCreateEditForm: React.ForwardRefRenderFunction<
   const addCustomFormValue = React.useCallback(() => {
     setCustomValues(oldValues => {
       const formData = formRef.current.getData();
-      const customValues = [
-        ...oldValues,
-        { value: undefined, statementDate: undefined },
-      ];
+      const customValues = [...oldValues, { value: undefined, statementDate: undefined }];
 
       formRef.current.setData({
         ...formData,
@@ -279,9 +256,7 @@ const StatmentCreateEditForm: React.ForwardRefRenderFunction<
             {isSending ? (
               <Loading size={20} />
             ) : (
-              <TouchableOpacity onPress={onDelete}>
-                {icons.TRASH({ size: 24, color: 'secondary' })}
-              </TouchableOpacity>
+              <TouchableOpacity onPress={onDelete}>{icons.TRASH({ size: 24, color: 'secondary' })}</TouchableOpacity>
             )}
           </>
         ) : null,
@@ -314,10 +289,12 @@ const StatmentCreateEditForm: React.ForwardRefRenderFunction<
             <S.FormItem>
               <Dropdown
                 placeholder="Tipo"
-                options={statementTypes?.data?.map(statementType => ({
-                  title: statementType.description,
-                  value: statementType.id,
-                }))}
+                options={statementTypes?.data
+                  ?.filter(statementType => !statementType.isCard)
+                  ?.map(statementType => ({
+                    title: statementType.description,
+                    value: statementType.id,
+                  }))}
                 name="statementType"
               />
             </S.FormItem>
@@ -378,12 +355,7 @@ const StatmentCreateEditForm: React.ForwardRefRenderFunction<
         </Form>
       </S.FormContainer>
 
-      <Button
-        title="Salvar"
-        variant="primary"
-        onPress={() => formRef.current?.submitForm?.()}
-        isSending={isSending}
-      />
+      <Button title="Salvar" variant="primary" onPress={() => formRef.current?.submitForm?.()} isSending={isSending} />
     </View>
   );
 };

@@ -4,4 +4,5 @@ export interface DatePickerProps {
   name: string;
   minimumDate?: Date;
   maximumDate?: Date;
+  display?: 'spinner' | 'calendar';
 }

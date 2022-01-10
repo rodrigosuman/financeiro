@@ -3,6 +3,8 @@ import ReduxActions from '../../../constants/reduxActions';
 import { APIStatementType } from '../../../types';
 import { StatementsState } from './types';
 
+const CURRENT_DATE = new Date();
+
 const INITIAL_STATE: StatementsState = {
   data: [],
   balance: {
@@ -15,6 +17,10 @@ const INITIAL_STATE: StatementsState = {
   isSendingMultSelect: undefined,
   multSelectedStatements: [],
   isMultSelect: false,
+  pagination: {
+    mounth: CURRENT_DATE.getMonth() + 1,
+    year: CURRENT_DATE.getFullYear(),
+  },
 };
 
 export const sumDebts = (data?: APIStatementType[]) => {
@@ -87,6 +93,10 @@ const reducer: Reducer<StatementsState, any> = (state = INITIAL_STATE, action) =
 
     case ReduxActions.SET_COPY_STATEMENTS_IS_SENDING: {
       return { ...state, isSendingMultSelect: action.payload.isSendingMultSelect };
+    }
+
+    case ReduxActions.SET_PAGINATION_ARGS: {
+      return { ...state, pagination: action.payload.pagination };
     }
 
     default:

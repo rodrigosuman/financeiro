@@ -6,7 +6,8 @@ import {
   APICreateStatementRequest,
   APIFindByMounthResponse,
   APIPatchStatementRequest,
-  APIStatementType
+  APIStatementType,
+  APIUpdateCreditCards
 } from '../../../types';
 
 export const getAsyncMounthStatementsAction = (year: number, mounth: number) => {
@@ -62,4 +63,12 @@ export const asyncCopyStatementsAction = (data: APICopyStatements) => {
 
 export const setCopyStatementsIsSendingAction = (isSendingMultSelect?: boolean) => {
   return action(ReduxActions.SET_COPY_STATEMENTS_IS_SENDING, { isSendingMultSelect });
+};
+
+export const asyncUpdateCreditCardsAction = (data: APIUpdateCreditCards) => {
+  return action(ReduxActions.ASYNC_UPDATE_CREDIT_CARDS, data);
+};
+
+export const setPagination = (pagination: { year: number; mounth: number }) => {
+  return action(ReduxActions.SET_PAGINATION_ARGS, { pagination });
 };

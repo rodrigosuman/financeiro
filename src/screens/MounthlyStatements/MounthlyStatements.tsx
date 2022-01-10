@@ -15,9 +15,11 @@ import Routes from '../../constants/routesPath';
 import useCurrencyFormater from '../../hooks/useCurrencyFormater';
 import useNavigation from '../../hooks/useNavigation';
 import useSelector from '../../hooks/useSelector';
+import icons from '../../icons';
 import {
   getAsyncMounthStatementsAction,
   setMounthStatementsIsLoadingAction,
+  setPagination,
   setStatementsIsMultSelectAction,
   setStatementsIsSendingAction,
   setStatementsMultSelectedItemAction
@@ -63,6 +65,7 @@ const MounthlyStatements: React.FC = () => {
     (year: number, mounth: number) => {
       _year.current = year;
       _mounth.current = mounth;
+      dispatch(setPagination({ mounth, year }));
       dispatch(setMounthStatementsIsLoadingAction(true));
       dispatch(getAsyncMounthStatementsAction(year, mounth));
     },
@@ -94,6 +97,17 @@ const MounthlyStatements: React.FC = () => {
     };
   }, [data]);
 
+  const navigateToUpdateCards = React.useCallback(
+    (statement?: APIStatementType) => {
+      dispatch(setStatementsIsSendingAction(undefined));
+      // @ts-ignore
+      navigation.navigate(Routes.UPDATE_CARDS, {
+        statement,
+      });
+    },
+    [dispatch, navigation],
+  );
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
       title: isMultSelect ? (SELECTED_ITEMS_SUM ? _selectedItemsSum : '') : 'Lançamentos',
@@ -104,21 +118,26 @@ const MounthlyStatements: React.FC = () => {
             alignItems: 'center',
             marginRight: -12,
           }}>
-          {isMultSelect && <ShareIcon />}
-
-          {/* <TouchableOpacity
-            style={{
-              width: 40,
-              height: 40,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            {icons.FILTER({ size: 24 })}
-          </TouchableOpacity> */}
+          {isMultSelect ? (
+            <ShareIcon />
+          ) : (
+            <S.UpdateCreditCardButton onPress={() => navigateToUpdateCards()}>
+              {icons.CREDIT_CARD({ size: 18 })}
+              <S.UpdateCardButtonText>Atualizar cartões</S.UpdateCardButtonText>
+            </S.UpdateCreditCardButton>
+          )}
         </View>
       ),
     });
-  }, [navigation, isMultSelect, dispatch, multSelectedStatements, SELECTED_ITEMS_SUM, _selectedItemsSum]);
+  }, [
+    navigation,
+    isMultSelect,
+    dispatch,
+    multSelectedStatements,
+    SELECTED_ITEMS_SUM,
+    _selectedItemsSum,
+    navigateToUpdateCards,
+  ]);
 
   React.useEffect(() => {
     const CURRENT_DATE = new Date();

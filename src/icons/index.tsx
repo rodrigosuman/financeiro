@@ -9,6 +9,7 @@ import Check from './Check';
 import ChevronDown from './ChevronDown';
 import Close from './Close';
 import Copy from './Copy';
+import CreditCard from './CreditCard';
 import Filter from './Filter';
 import Minus from './Minus';
 import MultChecks from './MultChecks';
@@ -37,6 +38,7 @@ const icons = {
   MULT_CHECK: (props?: Props) => <MultChecks {...props} />,
   SHARE: (props?: Props) => <Share {...props} />,
   RETURN: (props?: Props) => <Return {...props} />,
+  CREDIT_CARD: (props?: Props) => <CreditCard {...props} />,
 };
 
 export default icons;

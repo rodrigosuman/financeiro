@@ -7,7 +7,7 @@ import * as S from './styles';
 import { DatePickerProps } from './types';
 
 const DatePicker: React.FC<DatePickerProps> = props => {
-  const { placeholder, onValue, name } = props;
+  const { placeholder, onValue, name, display = 'calendar' } = props;
 
   const datePickerRef = React.useRef<any>(null);
   const [selectedDate, setSelectedDate] = React.useState<Date | undefined>();
@@ -70,13 +70,11 @@ const DatePicker: React.FC<DatePickerProps> = props => {
           value={selectedDate || new Date()}
           mode="date"
           is24Hour={true}
-          display="calendar"
+          display={display}
           minimumDate={props.minimumDate}
           maximumDate={props.maximumDate}
           onChange={(event, date: any) => {
-            handleChangeDate(
-              date ? new Date(date) : selectedDate ? selectedDate : new Date(),
-            );
+            handleChangeDate(date ? new Date(date) : selectedDate ? selectedDate : new Date());
           }}
         />
       )}

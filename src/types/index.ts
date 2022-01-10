@@ -69,6 +69,7 @@ export type APIStatementTypes = {
   description: string;
   type: 'CREDIT' | 'DEBT';
   frequency: 'FIXED' | 'VARIABLE';
+  isCard: boolean;
 };
 
 export type APICreateStatementRequest = {
@@ -93,4 +94,11 @@ export type APIPatchStatementRequest = {
 export type APICopyStatements = {
   statements: APICreateStatementRequest[];
   year: number;
+};
+
+export type APIUpdateCreditCards = {
+  statementType: string;
+  firstIstallment: string;
+  totalValue: number;
+  installments: number;
 };

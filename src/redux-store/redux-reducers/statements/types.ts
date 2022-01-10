@@ -8,4 +8,8 @@ export type StatementsState = {
   isSendingMultSelect?: boolean;
   isMultSelect?: boolean;
   multSelectedStatements: APIStatementType[];
+  pagination: {
+    year: number;
+    mounth: number;
+  };
 };

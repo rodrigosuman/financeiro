@@ -7,9 +7,15 @@ import {
   getStatementsByMounth,
   patchStatements,
   postCopyStatements,
-  postStatements
+  postStatements,
+  postUpdateCreditCards
 } from '../../../services/api/actions';
-import { APICopyStatements, APICreateStatementRequest, APIPatchStatementRequest } from '../../../types';
+import {
+  APICopyStatements,
+  APICreateStatementRequest,
+  APIPatchStatementRequest,
+  APIUpdateCreditCards
+} from '../../../types';
 import {
   clearStatementsMultSelectedItemAction,
   getAsyncMounthStatementsAction,
@@ -35,8 +41,10 @@ export function* asyncCreateStatements(args: {
   try {
     const { statement } = args.payload;
 
-    const MOUNTH = statement.statementDate.getMonth() + 1;
-    const YEAR = statement.statementDate.getFullYear();
+    const { pagination }: StatementsState = yield select((state: RootState) => state?.statements);
+
+    const MOUNTH = pagination.mounth;
+    const YEAR = pagination.year;
 
     yield call(() =>
       postStatements({
@@ -102,10 +110,10 @@ export function* asyncCopyStatements(args: { payload: APICopyStatements }): Gene
   try {
     const { statements, year } = args.payload;
 
-    const { data }: StatementsState = yield select((state: RootState) => state?.statements);
+    const { pagination }: StatementsState = yield select((state: RootState) => state?.statements);
 
-    const MOUNTH = new Date(data?.[0]?.statementDate || new Date()).getMonth() + 1;
-    const YEAR = new Date(data?.[0]?.statementDate || new Date()).getFullYear();
+    const MOUNTH = pagination.mounth;
+    const YEAR = pagination.year;
 
     yield call(() =>
       postCopyStatements({
@@ -123,12 +131,31 @@ export function* asyncCopyStatements(args: { payload: APICopyStatements }): Gene
   }
 }
 
+export function* asyncUpdateCreditCards(args: { payload: APIUpdateCreditCards }): Generator<any, any, any> {
+  try {
+    const { pagination }: StatementsState = yield select((state: RootState) => state?.statements);
+
+    const MOUNTH = pagination.mounth;
+    const YEAR = pagination.year;
+
+    yield call(() => postUpdateCreditCards(args.payload));
+
+    yield put(getAsyncMounthStatementsAction(YEAR, MOUNTH));
+    yield put(setStatementsIsSendingAction(false));
+    yield put(setCopyStatementsIsSendingAction(false));
+    yield put(clearStatementsMultSelectedItemAction());
+  } catch (error) {
+    console.log({ error });
+  }
+}
+
 function* sagas() {
   yield takeLatest(ReduxActions.ASYNC_GET_MOUNTH_STATEMENTS, asyncGetStatementsByMounth);
   yield takeLatest(ReduxActions.ASYNC_CREATE_STATEMENTS, (data: any) => asyncCreateStatements(data));
   yield takeLatest(ReduxActions.ASYNC_UPDATE_STATEMENTS, (data: any) => asyncPatchStatements(data));
   yield takeLatest(ReduxActions.ASYNC_DELETE_STATEMENTS, (data: any) => asyncDeleteStatements(data));
   yield takeLatest(ReduxActions.ASYNC_COPY_STATEMENTS, (data: any) => asyncCopyStatements(data));
+  yield takeLatest(ReduxActions.ASYNC_UPDATE_CREDIT_CARDS, (data: any) => asyncUpdateCreditCards(data));
 }
 
 export default sagas;
