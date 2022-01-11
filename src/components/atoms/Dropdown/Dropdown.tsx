@@ -52,15 +52,11 @@ const Dropdown: React.FC<DropdownProps> = props => {
     });
   }, [fieldName, options, registerField]);
 
-  const displayedValue = options.find(
-    option => option.value === selectedOption?.value,
-  )?.title;
+  const displayedValue = options.find(option => option.value === selectedOption?.value)?.title;
 
   return (
     <React.Fragment>
-      <S.Container
-        ref={dropdownRef}
-        onPress={() => modalRef.current?.toggleVisible()}>
+      <S.Container ref={dropdownRef} onPress={() => modalRef.current?.toggleVisible()}>
         <S.ValueWrapper>
           <S.ValueText>{displayedValue || placeholder}</S.ValueText>
         </S.ValueWrapper>

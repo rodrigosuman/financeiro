@@ -1,16 +1,20 @@
-import DateTimePicker from '@react-native-community/datetimepicker';
+import { Form } from '@unform/mobile';
 import { addMonths, format } from 'date-fns';
 import brazilianLocale from 'date-fns/locale/pt-BR';
+import moment from 'moment';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import icons from '../../../icons';
+import MounthSelector from '../../atoms/MounthSelector/MounthSelector';
+import { MounthSelectorRef, OnMounthSelectorChangeArgs } from '../../atoms/MounthSelector/types';
 import * as S from './styles';
 import { MounthPaginationProps } from './types';
 
 const MounthPagination: React.FC<MounthPaginationProps> = props => {
   const { onPaginate } = props;
   const [date, setDate] = React.useState<Date>(new Date());
-  const [show, setShow] = React.useState<boolean>(false);
+
+  const mounthSelectorRef = React.useRef<MounthSelectorRef>({ toggleVisible: () => {} });
 
   const _formatedDate = format(date, 'MMMM', {
     locale: brazilianLocale,
@@ -21,12 +25,10 @@ const MounthPagination: React.FC<MounthPaginationProps> = props => {
   });
 
   const handleOnPaginate = React.useCallback(
-    (date: Date) => {
+    (args: OnMounthSelectorChangeArgs) => {
+      setDate(new Date(`${args.year}-${args.mounth > 9 ? args.mounth : `0${args.mounth}`}-15`));
       if (typeof onPaginate === 'function') {
-        onPaginate?.({
-          year: date.getFullYear(),
-          mounth: date.getMonth() + 1,
-        });
+        onPaginate?.(args);
       }
     },
     [onPaginate],
@@ -37,7 +39,7 @@ const MounthPagination: React.FC<MounthPaginationProps> = props => {
       setDate(old => {
         const newDate = addMonths(old, handle);
 
-        handleOnPaginate(newDate);
+        handleOnPaginate({ mounth: newDate.getMonth() + 1, year: newDate.getFullYear() });
         return newDate;
       });
     },
@@ -51,7 +53,7 @@ const MounthPagination: React.FC<MounthPaginationProps> = props => {
           <S.IconWrapper>{icons.ARROW_LEFT()}</S.IconWrapper>
         </TouchableOpacity>
 
-        <S.HandlersWrapper onPressOut={() => setShow(true)}>
+        <S.HandlersWrapper onPress={() => mounthSelectorRef.current?.toggleVisible?.()}>
           <S.MounthTitle>{_formatedDate}</S.MounthTitle>
           <S.MounthTitleWrapper>
             <S.YearText>{_formatedYear}</S.YearText>
@@ -63,23 +65,17 @@ const MounthPagination: React.FC<MounthPaginationProps> = props => {
         </TouchableOpacity>
       </S.Container>
 
-      {show && (
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={date}
-          mode="date"
-          display="spinner"
-          onChange={(event, newDate: any) => {
-            setShow(false);
-            if (newDate) {
-              setDate(newDate);
-              handleOnPaginate(newDate);
-            } else {
-              setDate(date);
-            }
+      <Form onSubmit={console.log}>
+        <MounthSelector
+          onChange={args => {
+            handleOnPaginate(args);
           }}
+          renderInput={false}
+          ref={mounthSelectorRef}
+          initalValue={moment(date)}
+          name="mounth"
         />
-      )}
+      </Form>
     </React.Fragment>
   );
 };

@@ -5,21 +5,19 @@ import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import Button from '../../components/atoms/Button';
 import CurrencyInput from '../../components/atoms/CurrencyInput';
-import DatePicker from '../../components/atoms/DatePicker';
 import Dropdown from '../../components/atoms/Dropdown';
+import { DropdownOption } from '../../components/atoms/Dropdown/types';
+import MounthSelector from '../../components/atoms/MounthSelector/MounthSelector';
 import useNavigation from '../../hooks/useNavigation';
 import useSelector from '../../hooks/useSelector';
 import { asyncUpdateCreditCardsAction, setStatementsIsSendingAction } from '../../redux-store/redux-actions/statements';
 import * as S from './styles';
-import { UpdateCardsFormData, UpdateCardsFormProps, UpdateCardsFormRef } from './types';
+import { UpdateCardsFormData } from './types';
 
-const UpdateCardsForm: React.ForwardRefRenderFunction<UpdateCardsFormRef, UpdateCardsFormProps> = (props, ref) => {
+const UpdateCardsForm: React.FC = () => {
   const formRef = React.useRef<FormHandles>({} as FormHandles);
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const { mounth, year } = useSelector(state => state.statements.pagination);
-
-  const MINIMUM_DATE = new Date(`${year}-${mounth > 9 ? mounth : `0${mounth}`}-01`);
 
   const statementTypes = useSelector(state => state.statementTypes);
   const isSending = useSelector(state => state.statements.isSending);
@@ -36,6 +34,20 @@ const UpdateCardsForm: React.ForwardRefRenderFunction<UpdateCardsFormRef, Update
     },
     [dispatch],
   );
+
+  const installments = (): DropdownOption[] => {
+    const MAX_INSTALLMENTS = 15;
+    const options: DropdownOption[] = [];
+
+    for (let index = 1; index <= MAX_INSTALLMENTS; index++) {
+      options.push({
+        title: `${index}`,
+        value: index,
+      });
+    }
+
+    return options;
+  };
 
   React.useEffect(() => {
     if (isSending === false) {
@@ -66,65 +78,11 @@ const UpdateCardsForm: React.ForwardRefRenderFunction<UpdateCardsFormRef, Update
             </S.FormItem>
 
             <S.FormItem>
-              <Dropdown
-                placeholder="Parcelas"
-                options={[
-                  {
-                    title: '1',
-                    value: 1,
-                  },
-                  {
-                    title: '2',
-                    value: 2,
-                  },
-                  {
-                    title: '3',
-                    value: 3,
-                  },
-                  {
-                    title: '4',
-                    value: 4,
-                  },
-                  {
-                    title: '5',
-                    value: 5,
-                  },
-                  {
-                    title: '6',
-                    value: 6,
-                  },
-                  {
-                    title: '6',
-                    value: 6,
-                  },
-                  {
-                    title: '9',
-                    value: 9,
-                  },
-                  {
-                    title: '10',
-                    value: 10,
-                  },
-                  {
-                    title: '11',
-                    value: 11,
-                  },
-                  {
-                    title: '12',
-                    value: 12,
-                  },
-                ]}
-                name="installments"
-              />
+              <Dropdown placeholder="Parcelas" options={installments()} name="installments" />
             </S.FormItem>
 
             <S.FormItem>
-              <DatePicker
-                name="firstIstallment"
-                placeholder="Primeira parcela para"
-                display="spinner"
-                minimumDate={MINIMUM_DATE}
-              />
+              <MounthSelector name="firstIstallment" placeholder="Primeira parcela para" />
             </S.FormItem>
           </S.FormInputsContainer>
         </Form>
@@ -135,4 +93,4 @@ const UpdateCardsForm: React.ForwardRefRenderFunction<UpdateCardsFormRef, Update
   );
 };
 
-export default React.forwardRef(UpdateCardsForm);
+export default UpdateCardsForm;

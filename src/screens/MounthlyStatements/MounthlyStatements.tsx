@@ -120,11 +120,13 @@ const MounthlyStatements: React.FC = () => {
           }}>
           {isMultSelect ? (
             <ShareIcon />
-          ) : (
+          ) : !isLoading ? (
             <S.UpdateCreditCardButton onPress={() => navigateToUpdateCards()}>
               {icons.CREDIT_CARD({ size: 18 })}
               <S.UpdateCardButtonText>Atualizar cartões</S.UpdateCardButtonText>
             </S.UpdateCreditCardButton>
+          ) : (
+            <></>
           )}
         </View>
       ),
@@ -137,6 +139,7 @@ const MounthlyStatements: React.FC = () => {
     SELECTED_ITEMS_SUM,
     _selectedItemsSum,
     navigateToUpdateCards,
+    isLoading,
   ]);
 
   React.useEffect(() => {
