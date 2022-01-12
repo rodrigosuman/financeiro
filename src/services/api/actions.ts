@@ -5,6 +5,7 @@ import {
   APICreateStatementResponse,
   APIDashboardReponse,
   APIFindByMounthResponse,
+  APIPatchStatementsBody,
   APIPostOrPatchStatements,
   APIStatementTypes,
   APIUpdateCreditCards,
@@ -28,12 +29,16 @@ export const postStatements = (body: APIPostOrPatchStatements) => {
   return api.post<APICreateStatementResponse>(ApiRoutes.STATEMENTS, body);
 };
 
-export const patchStatements = (statementId: string, body: Partial<APIPostOrPatchStatements>) => {
-  return api.patch<APIUpdateStatementResponse>(ApiRoutes.STATEMENTS + '/' + statementId, body);
+export const patchStatements = (body: APIPatchStatementsBody) => {
+  return api.patch<APIUpdateStatementResponse>(ApiRoutes.STATEMENTS, body);
 };
 
-export const deleteStatements = (statementId: string) => {
-  return api.delete<APIUpdateStatementResponse>(ApiRoutes.STATEMENTS + '/' + statementId);
+export const deleteStatements = (ids: string[]) => {
+  return api.delete<APIUpdateStatementResponse>(ApiRoutes.STATEMENTS, {
+    data: {
+      ids,
+    },
+  });
 };
 
 export const getStatementTypes = () => {

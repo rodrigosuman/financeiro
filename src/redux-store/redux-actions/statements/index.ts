@@ -5,7 +5,7 @@ import {
   APICopyStatements,
   APICreateStatementRequest,
   APIFindByMounthResponse,
-  APIPatchStatementRequest,
+  APIPatchStatementsBody,
   APIStatementType,
   APIUpdateCreditCards
 } from '../../../types';
@@ -30,14 +30,13 @@ export const asyncPostStatementAction = (statement: APICreateStatementRequest) =
   return action(ReduxActions.ASYNC_CREATE_STATEMENTS, { statement });
 };
 
-export const asyncPatchStatementAction = (statement: Partial<APIPatchStatementRequest>) => {
-  return action(ReduxActions.ASYNC_UPDATE_STATEMENTS, { statement });
+export const asyncPatchStatementAction = (statements: APIPatchStatementsBody) => {
+  return action(ReduxActions.ASYNC_UPDATE_STATEMENTS, statements);
 };
 
-export const asyncDeleteStatementAction = (statementId: string, statementDate: Date) => {
+export const asyncDeleteStatementAction = (ids: string[]) => {
   return action(ReduxActions.ASYNC_DELETE_STATEMENTS, {
-    statementId,
-    statementDate,
+    ids,
   });
 };
 

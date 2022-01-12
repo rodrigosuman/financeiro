@@ -102,3 +102,13 @@ export type APIUpdateCreditCards = {
   totalValue: number;
   installments: number;
 };
+
+// @ts-ignore
+export interface APIPatchStatements extends Partial<APIStatementType> {
+  id: string;
+  statementType?: string;
+}
+
+export interface APIPatchStatementsBody {
+  statements: APIPatchStatements[];
+}

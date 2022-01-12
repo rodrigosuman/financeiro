@@ -1,7 +1,6 @@
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { FormHandles, Scope } from '@unform/core';
 import { Form } from '@unform/mobile';
-import { parseISO } from 'date-fns';
 import React from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { useDispatch } from 'react-redux';
@@ -126,19 +125,23 @@ const StatmentCreateEditForm: React.ForwardRefRenderFunction<
 
   const onDelete = React.useCallback(() => {
     dispatch(setStatementsIsSendingAction(true));
-    dispatch(asyncDeleteStatementAction(params?.statement?.id, parseISO(params.statement?.statementDate + 'T23:59')));
-  }, [dispatch, params.statement?.id, params.statement?.statementDate]);
+    dispatch(asyncDeleteStatementAction([params?.statement?.id]));
+  }, [dispatch, params?.statement?.id]);
 
   const updateStatement = React.useCallback(
     (data: StatementFormData) => {
       dispatch(
         asyncPatchStatementAction({
-          id: params?.statement?.id,
-          statementDate: data.statementDate,
-          statementType: data.statementType,
-          value: Number(data.value),
-          status: data.status,
-          comments: data.comments || [],
+          statements: [
+            {
+              id: params?.statement?.id,
+              statementDate: data.statementDate,
+              statementType: data.statementType,
+              value: Number(data.value),
+              status: data.status,
+              comments: data.comments || [],
+            },
+          ],
         }),
       );
     },
@@ -290,7 +293,7 @@ const StatmentCreateEditForm: React.ForwardRefRenderFunction<
               <Dropdown
                 placeholder="Tipo"
                 options={statementTypes?.data
-                  ?.filter(statementType => !statementType.isCard)
+                  ?.filter(statementType => Boolean(params.statement?.id) || !statementType.isCard)
                   ?.map(statementType => ({
                     title: statementType.description,
                     value: statementType.id,

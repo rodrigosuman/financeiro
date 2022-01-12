@@ -13,7 +13,7 @@ import {
 import {
   APICopyStatements,
   APICreateStatementRequest,
-  APIPatchStatementRequest,
+  APIPatchStatementsBody,
   APIUpdateCreditCards
 } from '../../../types';
 import {
@@ -66,25 +66,33 @@ export function* asyncCreateStatements(args: {
   }
 }
 
-export function* asyncPatchStatements(args: {
-  payload: { statement: APIPatchStatementRequest };
-}): Generator<any, any, any> {
+export function* asyncPatchStatements(args: { payload: APIPatchStatementsBody }): Generator<any, any, any> {
   try {
-    const { statement } = args.payload;
+    const { statements } = args.payload;
 
-    const MOUNTH = statement.statementDate.getMonth() + 1;
-    const YEAR = statement.statementDate.getFullYear();
+    const { pagination }: StatementsState = yield select((state: RootState) => state?.statements);
 
-    yield call(() =>
-      patchStatements(statement.id, {
-        ...statement,
-        statementDate: format(statement.statementDate, 'yyyy/MM/dd'),
-        id: undefined,
-      }),
-    );
+    const MOUNTH = pagination.mounth;
+    const YEAR = pagination.year;
+
+    yield call(() => {
+      return patchStatements({
+        statements: statements.map(statement => {
+          return {
+            ...statement,
+            statementDate: statement.statementDate
+              ? format(new Date(statement.statementDate), 'yyyy/MM/dd')
+              : undefined,
+            id: statement.id,
+          };
+        }),
+      });
+    });
 
     yield put(getAsyncMounthStatementsAction(YEAR, MOUNTH));
     yield put(setStatementsIsSendingAction(false));
+    yield put(setCopyStatementsIsSendingAction(false));
+    yield put(clearStatementsMultSelectedItemAction());
   } catch (error) {
     console.error(error);
   }
@@ -92,15 +100,19 @@ export function* asyncPatchStatements(args: {
 
 export function* asyncDeleteStatements(args: any): Generator<any, any, any> {
   try {
-    const { statementId, statementDate } = args.payload;
+    const { ids } = args.payload;
 
-    const MOUNTH = statementDate.getMonth() + 1;
-    const YEAR = statementDate.getFullYear();
+    const { pagination }: StatementsState = yield select((state: RootState) => state?.statements);
 
-    yield call(() => deleteStatements(statementId));
+    const MOUNTH = pagination.mounth;
+    const YEAR = pagination.year;
+
+    yield call(() => deleteStatements(ids));
 
     yield put(getAsyncMounthStatementsAction(YEAR, MOUNTH));
     yield put(setStatementsIsSendingAction(false));
+    yield put(setCopyStatementsIsSendingAction(false));
+    yield put(clearStatementsMultSelectedItemAction());
   } catch (error) {
     console.error(error);
   }
