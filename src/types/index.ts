@@ -101,6 +101,7 @@ export type APIUpdateCreditCards = {
   firstIstallment: string;
   totalValue: number;
   installments: number;
+  isTotalValue?: boolean;
 };
 
 // @ts-ignore

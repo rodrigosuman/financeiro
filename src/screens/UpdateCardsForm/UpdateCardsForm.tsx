@@ -8,6 +8,7 @@ import CurrencyInput from '../../components/atoms/CurrencyInput';
 import Dropdown from '../../components/atoms/Dropdown';
 import { DropdownOption } from '../../components/atoms/Dropdown/types';
 import MounthSelector from '../../components/atoms/MounthSelector/MounthSelector';
+import UnformCheckbox from '../../components/atoms/UnformCheckbox';
 import useNavigation from '../../hooks/useNavigation';
 import useSelector from '../../hooks/useSelector';
 import { asyncUpdateCreditCardsAction, setStatementsIsSendingAction } from '../../redux-store/redux-actions/statements';
@@ -28,6 +29,7 @@ const UpdateCardsForm: React.FC = () => {
       dispatch(
         asyncUpdateCreditCardsAction({
           ...data,
+          isTotalValue: !data.isTotalValue,
           firstIstallment: new Date(data.firstIstallment).toISOString(),
         }),
       );
@@ -83,6 +85,10 @@ const UpdateCardsForm: React.FC = () => {
 
             <S.FormItem>
               <MounthSelector name="firstIstallment" placeholder="Primeira parcela para" />
+            </S.FormItem>
+
+            <S.FormItem>
+              <UnformCheckbox name="isTotalValue" label="Valor por parcela" />
             </S.FormItem>
           </S.FormInputsContainer>
         </Form>

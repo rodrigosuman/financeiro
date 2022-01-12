@@ -3,6 +3,7 @@ export type UpdateCardsFormData = {
   firstIstallment: Date;
   totalValue: number;
   installments: number;
+  isTotalValue?: boolean;
 };
 
 export interface UpdateCardsFormProps {
